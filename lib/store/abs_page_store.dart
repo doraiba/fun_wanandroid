@@ -96,10 +96,13 @@ abstract class _PageStore<T> with Store {
     list..addAll(_list);
     debugPrint('hasmore:$has,page:$page,pageCount:$pageCount');
 
-    if (!has) {
-      refreshController.loadNoData();
-    } else if (page == _PageStore.initialPage) {
-      refreshController.refreshCompleted();
+    if (!has || page == _PageStore.initialPage) {
+      if (page == _PageStore.initialPage) {
+        refreshController.refreshCompleted();
+      }
+      if (!has) {
+        refreshController.loadNoData();
+      }
     } else {
       refreshController.loadComplete();
     }

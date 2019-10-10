@@ -50,6 +50,7 @@ class _ArticleListPageState extends State<ArticleListPage>
                 );
               }
               return SmartRefresher(
+                header: WaterDropMaterialHeader(),
                 controller: store.refreshController,
                 onRefresh: store.refresh,
                 onLoading: store.forward,
