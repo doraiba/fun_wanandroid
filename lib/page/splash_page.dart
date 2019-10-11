@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fun_wanandroid/helper/assets_helper.dart';
+import 'package:fun_wanandroid/helper/image_helper.dart';
 import 'package:fun_wanandroid/route/routes.dart';
 import 'package:rxdart/rxdart.dart';
 

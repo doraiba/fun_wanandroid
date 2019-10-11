@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:fun_wanandroid/generated/i18n.dart';
 import 'package:fun_wanandroid/init/initializer.dart';
 import 'package:fun_wanandroid/route/routes.dart';
+import 'package:fun_wanandroid/store/category_store.dart';
 import 'package:fun_wanandroid/store/preferences_service.dart';
 import 'package:fun_wanandroid/store/settings_store.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
         ProxyProvider<PreferencesService, SettingsStore>(
             builder: (_, preferencesService, __) =>
                 SettingsStore(preferencesService)),
+        Provider(
+          builder: (_) => CategorytStore(),
+        )
       ],
       child: Consumer<SettingsStore>(
         builder: (_, settingsStore, __) => Observer(
@@ -45,6 +49,9 @@ class MyApp extends StatelessWidget {
                 // localeResolutionCallback: I18n.delegate.resolution(),
                 theme: ThemeData(
                   primarySwatch: Colors.blue,
+                  brightness: settingsStore.useDarkMode
+                      ? Brightness.dark
+                      : Brightness.light,
                 ),
                 onGenerateRoute: Routes.router.generator,
               ),

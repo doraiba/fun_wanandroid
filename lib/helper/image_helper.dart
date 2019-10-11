@@ -44,8 +44,8 @@ class ImageHelper {
 
   static CachedNetworkImage imageCache(
       {@required String url,
-      @required double width,
-      @required double height,
+      double width,
+      double height,
       ImageType imageType: ImageType.normal,
       BoxFit fit = BoxFit.cover}) {
     return CachedNetworkImage(

@@ -69,6 +69,7 @@ class _ArticleListPageState extends State<ArticleListPage>
   }
 }
 
+/// 文章列表item
 class ArticleListItem extends StatelessWidget {
   final Article article;
   const ArticleListItem({Key key, @required this.article}) : super(key: key);
@@ -78,7 +79,7 @@ class ArticleListItem extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Material(
-          color: Theme.of(context).accentColor.withAlpha(10),
+          // color: Theme.of(context).accentColor.withAlpha(10),
           child: InkWell(
             onTap: () {},
             child: Container(
@@ -86,8 +87,7 @@ class ArticleListItem extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
                   border: Border(
-                      bottom: Divider.createBorderSide(context,
-                          color: Colors.grey, width: .7))),
+                      bottom: Divider.createBorderSide(context, width: .7))),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -123,44 +123,39 @@ class ArticleListItem extends StatelessWidget {
                       )
                     ],
                   ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Html(
-                              data: article.title,
-                              useRichText: false,
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              defaultTextStyle:
-                                  Theme.of(context).textTheme.subtitle,
-                            ),
-                            Container(
-                              margin: EdgeInsetsDirectional.only(top: 2),
-                              child: Text(article.desc,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.caption),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 5),
-                        child: article.envelopePic.isEmpty
-                            ? SizedBox(
-                                height: 60,
-                                width: 60,
-                              )
-                            : ImageHelper.imageCache(
-                                url: article.envelopePic,
-                                height: 60,
-                                width: 60,
+                  if (article.envelopePic.isEmpty)
+                    Padding(
+                      padding: EdgeInsets.only(top: 7),
+                      child: _buildTitle(context, article.title),
+                    )
+                  else
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              _buildTitle(context, article.title),
+                              Container(
+                                margin: EdgeInsetsDirectional.only(top: 2),
+                                child: Text(article.desc,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context).textTheme.caption),
                               ),
-                      )
-                    ],
-                  ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 5),
+                          child: ImageHelper.imageCache(
+                            url: article.envelopePic,
+                            height: 60,
+                            width: 60,
+                          ),
+                        )
+                      ],
+                    ),
                   Row(
                     children: <Widget>[
                       Padding(
@@ -198,6 +193,15 @@ class ArticleListItem extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+
+  _buildTitle(BuildContext context, String title) {
+    return Html(
+      data: title,
+      useRichText: false,
+      padding: EdgeInsets.symmetric(vertical: 5),
+      defaultTextStyle: Theme.of(context).textTheme.subtitle,
     );
   }
 }

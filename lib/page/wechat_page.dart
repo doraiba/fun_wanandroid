@@ -5,12 +5,12 @@ import 'package:fun_wanandroid/page/article_list_page.dart';
 import 'package:fun_wanandroid/store/category_store.dart';
 import 'package:provider/provider.dart';
 
-class ProjectPage extends StatefulWidget {
+class WechatPage extends StatefulWidget {
   @override
-  _ProjectPageState createState() => _ProjectPageState();
+  _WechatPageState createState() => _WechatPageState();
 }
 
-class _ProjectPageState extends State<ProjectPage>
+class _WechatPageState extends State<WechatPage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
@@ -21,7 +21,7 @@ class _ProjectPageState extends State<ProjectPage>
     return Consumer<CategorytStore>(
       builder: (_, store, __) {
         return WidgetHelper.observerWrap<List<Tree>>(
-            supplier: () => store.treesFuture,
+            supplier: () => store.wechatFuture,
             refresh: () async => store.fetchLatest(),
             builder: (c, data, _) {
               return DefaultTabController(

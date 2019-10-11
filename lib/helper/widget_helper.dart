@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:fun_wanandroid/generated/i18n.dart';
 import 'package:fun_wanandroid/helper/image_helper.dart';
 import 'package:mobx/mobx.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 typedef WrapBuilder<T> = Widget Function(
@@ -138,6 +139,50 @@ class OnlyTips extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ConsumerObserver<T> extends StatelessWidget {
+  final Widget Function(BuildContext context, T value, Widget child) builder;
+  final Widget child;
+
+  const ConsumerObserver({Key key, this.builder, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<T>(
+      builder: (_, store, __) {
+        return Observer(
+          builder: (BuildContext context) {
+            return builder(context, store, __);
+          },
+        );
+      },
+      child: child,
+    );
+  }
+}
+
+class ConsumerObserver2<T1, T2> extends StatelessWidget {
+  final Widget Function(BuildContext context, T1 t1, T2 t2, Widget child)
+      builder;
+  final Widget child;
+
+  const ConsumerObserver2({Key key, this.builder, this.child})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer2<T1, T2>(
+      builder: (_, t1, t2, __) {
+        return Observer(
+          builder: (BuildContext context) {
+            return builder(context, t1, t2, __);
+          },
+        );
+      },
+      child: child,
     );
   }
 }
