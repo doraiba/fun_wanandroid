@@ -11,12 +11,20 @@ class Application {
   static SharedPreferences prefs;
 
   static Future<void> init() async {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    ///初始化路由
     Routes.configureRoutes();
     if (Platform.isAndroid) {
+      ////Android 头部透明
       SystemChrome.setSystemUIOverlayStyle(
           SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     }
+
+    ///初始化本地存储
     prefs = await SharedPreferences.getInstance();
+
+    ///初始化网络请求配置
     await DioHelper.init();
   }
 }

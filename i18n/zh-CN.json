@@ -69,5 +69,7 @@
   "appUpdateDownloadCanceled": "下载已取消",
   "appUpdateDoubleBackTips": "再次点击返回键,取消下载",
   "operatorError": "操作失败",
-  "back":"返回上级"
+  "back":"返回上级",
+  "zh_CN":"简体中文",
+  "en_US":"English"
 }

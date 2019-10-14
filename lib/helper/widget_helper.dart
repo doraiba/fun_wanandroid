@@ -42,8 +42,6 @@ class WidgetHelper {
     return Observer(
       builder: (context) {
         ObservableFuture future = supplier();
-        debugPrint(
-            '==============future.status:${future.status}==============');
         switch (future.status) {
           case FutureStatus.pending:
             return loading ??
@@ -146,14 +144,16 @@ class OnlyTips extends StatelessWidget {
 class ConsumerObserver<T> extends StatelessWidget {
   final Widget Function(BuildContext context, T value, Widget child) builder;
   final Widget child;
-
-  const ConsumerObserver({Key key, this.builder, this.child}) : super(key: key);
+  final String name;
+  const ConsumerObserver({Key key, this.builder, this.child, this.name})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer<T>(
       builder: (_, store, __) {
         return Observer(
+          name: name,
           builder: (BuildContext context) {
             return builder(context, store, __);
           },
@@ -184,5 +184,63 @@ class ConsumerObserver2<T1, T2> extends StatelessWidget {
       },
       child: child,
     );
+  }
+}
+
+class ThemeTile extends StatelessWidget {
+  final Widget leading;
+  final Widget title;
+  final ValueChanged<bool> onExpansionChanged;
+  final Widget child;
+  final Color backgroundColor;
+  final Widget trailing;
+  final bool initiallyExpanded;
+  final ValueChanged<int> onTap;
+  const ThemeTile({
+    Key key,
+    this.leading,
+    @required this.title,
+    this.backgroundColor,
+    this.onExpansionChanged,
+    this.child,
+    this.trailing,
+    this.initiallyExpanded = false,
+    this.onTap,
+  })  : assert(initiallyExpanded != null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      leading: leading,
+      title: title,
+      trailing: trailing,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: Wrap(
+            spacing: 5,
+            runSpacing: 5,
+            children: Colors.primaries.asMap().entries.map((item) {
+              return Material(
+                color: item.value,
+                child: InkWell(
+                  onTap: _onTap(item.key),
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    child: child,
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        )
+      ],
+    );
+  }
+
+  GestureTapCallback _onTap(int index) {
+    return onTap == null ? null : () => onTap(index);
   }
 }

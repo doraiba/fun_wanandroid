@@ -22,159 +22,236 @@ class I18n implements WidgetsLocalizations {
   }
 
   static const GeneratedLocalizationsDelegate delegate =
-    const GeneratedLocalizationsDelegate();
+      const GeneratedLocalizationsDelegate();
 
   /// function to be invoked when changing the language
   static LocaleChangeCallback onLocaleChanged;
 
   static I18n of(BuildContext context) =>
-    Localizations.of<I18n>(context, WidgetsLocalizations);
+      Localizations.of<I18n>(context, WidgetsLocalizations);
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
   /// "Fun Android"
   String get appName => "Fun Android";
+
   /// "Confirm"
   String get actionConfirm => "Confirm";
+
   /// "Cancel"
   String get actionCancel => "Cancel";
+
   /// "Nothing Found"
   String get viewStateMessageEmpty => "Nothing Found";
+
   /// "Not sign in yet"
   String get viewStateMessageUnAuth => "Not sign in yet";
+
   /// "Refresh"
   String get viewStateButtonRefresh => "Refresh";
+
   /// "Retry"
   String get viewStateButtonRetry => "Retry";
+
   /// "Load Failed"
   String get viewStateButtonError => "Load Failed";
+
   /// "Sign In"
   String get viewStateButtonLogin => "Sign In";
+
   /// "release to enter second floor"
   String get refreshTwoLevel => "release to enter second floor";
+
   /// "Retry"
   String get retry => "Retry";
+
   /// "Skip"
   String get splashSkip => "Skip";
+
   /// "Home"
   String get tabHome => "Home";
+
   /// "Project"
   String get tabProject => "Project";
+
   /// "Structure"
   String get tabStructure => "Structure";
+
   /// "Me"
   String get tabUser => "Me";
+
   /// "Setting"
   String get setting => "Setting";
+
   /// "Language"
   String get settingLanguage => "Language";
+
   /// "System Font"
   String get settingFont => "System Font";
+
   /// "Sign Out"
   String get logout => "Sign Out";
+
   /// "Favorites"
   String get favourites => "Favorites";
+
   /// "Dark Mode"
   String get darkMode => "Dark Mode";
+
   /// "Theme"
   String get theme => "Theme";
+
   /// "About"
   String get about => "About";
+
   /// "Close"
   String get close => "Close";
+
   /// "FeedBack"
   String get feedback => "FeedBack";
+
   /// "Can't find mail app,please github issues"
   String get githubIssue => "Can't find mail app,please github issues";
+
   /// "Auto"
   String get autoBySystem => "Auto";
+
   /// "ZCOOL KuaiLe"
   String get fontKuaiLe => "ZCOOL KuaiLe";
+
   /// "not empty"
   String get fieldNotNull => "not empty";
+
   /// "Username"
   String get userName => "Username";
+
   /// "Password"
   String get password => "Password";
+
   /// "Sign Up"
   String get toSignUp => "Sign Up";
+
   /// "Sign Up"
   String get signUp => "Sign Up";
+
   /// "Confirm Password"
   String get rePassword => "Confirm Password";
+
   /// "The two passwords differ"
   String get twoPwdDifferent => "The two passwords differ";
+
   /// "Sign In"
   String get toSignIn => "Sign In";
+
   /// "Sign In"
   String get signIn => "Sign In";
+
   /// "No Account ? "
   String get noAccount => "No Account ? ";
+
   /// "My favourites"
   String get myFavourites => "My favourites";
+
   /// "More"
   String get signIn3thd => "More";
+
   /// "Hot"
   String get searchHot => "Hot";
+
   /// "Shake"
   String get searchShake => "Shake";
+
   /// "History"
   String get searchHistory => "History";
+
   /// "Clear"
   String get clear => "Clear";
+
   /// "Refresh"
   String get refresh => "Refresh";
+
   /// "UnLike"
   String get unLike => "UnLike";
+
   /// "Like"
   String get Like => "Like";
+
   /// "Share"
   String get share => "Share";
+
   /// "Wechat"
   String get wechatAccount => "Wechat";
+
   /// "Rate"
   String get rate => "Rate";
+
   /// "Go to Sign In"
   String get needLogin => "Go to Sign In";
+
   /// "Load failed,retry later"
   String get loadFailed => "Load failed,retry later";
+
   /// "Remove"
   String get collectionRemove => "Remove";
+
   /// "Top"
   String get article_tag_top => "Top";
+
   /// "Open Browser"
   String get openBrowser => "Open Browser";
+
   /// "Coin"
   String get coin => "Coin";
+
   /// "Check Update"
   String get appUpdateCheckUpdate => "Check Update";
+
   /// "Update"
   String get appUpdateActionUpdate => "Update";
+
   /// "Least version now "
   String get appUpdateLeastVersion => "Least version now ";
+
   /// "Downloading..."
   String get appUpdateDownloading => "Downloading...";
+
   /// "Download failed"
   String get appUpdateDownloadFailed => "Download failed";
+
   /// "It has been detected that it has been downloaded, whether it is installed?"
-  String get appUpdateReDownloadContent => "It has been detected that it has been downloaded, whether it is installed?";
+  String get appUpdateReDownloadContent =>
+      "It has been detected that it has been downloaded, whether it is installed?";
+
   /// "Download"
   String get appUpdateActionDownloadAgain => "Download";
+
   /// "Install"
   String get appUpdateActionInstallApk => "Install";
+
   /// "Version Update"
   String get appUpdateUpdate => "Version Update";
+
   /// "New version ${version}"
   String appUpdateFoundNewVersion(String version) => "New version ${version}";
+
   /// "Download canceled"
   String get appUpdateDownloadCanceled => "Download canceled";
+
   /// "Press back again, cancel download"
   String get appUpdateDoubleBackTips => "Press back again, cancel download";
+
   /// "operator error"
   String get operatorError => "operator error";
+
   /// "返回上级"
   String get back => "返回上级";
+
+  /// "简体中文"
+  String get zh_CN => "简体中文";
+
+  /// "English"
+  String get en_US => "English";
 }
 
 class _I18n_en_US extends I18n {
@@ -190,228 +267,319 @@ class _I18n_zh_CN extends I18n {
   /// "玩Android"
   @override
   String get appName => "玩Android";
+
   /// "确认"
   @override
   String get actionConfirm => "确认";
+
   /// "取消"
   @override
   String get actionCancel => "取消";
+
   /// "空空如也"
   @override
   String get viewStateMessageEmpty => "空空如也";
+
   /// "未登录"
   @override
   String get viewStateMessageUnAuth => "未登录";
+
   /// "刷新一下"
   @override
   String get viewStateButtonRefresh => "刷新一下";
+
   /// "重试"
   @override
   String get viewStateButtonRetry => "重试";
+
   /// "加载失败"
   @override
   String get viewStateButtonError => "加载失败";
+
   /// "登录"
   @override
   String get viewStateButtonLogin => "登录";
+
   /// "欢迎光临,我的空中楼阁"
   @override
   String get refreshTwoLevel => "欢迎光临,我的空中楼阁";
+
   /// "重试"
   @override
   String get retry => "重试";
+
   /// "跳过"
   @override
   String get splashSkip => "跳过";
+
   /// "首页"
   @override
   String get tabHome => "首页";
+
   /// "项目"
   @override
   String get tabProject => "项目";
+
   /// "体系"
   @override
   String get tabStructure => "体系";
+
   /// "我的"
   @override
   String get tabUser => "我的";
+
   /// "设置"
   @override
   String get setting => "设置";
+
   /// "多语言"
   @override
   String get settingLanguage => "多语言";
+
   /// "字体"
   @override
   String get settingFont => "字体";
+
   /// "退出登录"
   @override
   String get logout => "退出登录";
+
   /// "收藏"
   @override
   String get favourites => "收藏";
+
   /// "黑夜模式"
   @override
   String get darkMode => "黑夜模式";
+
   /// "色彩主题"
   @override
   String get theme => "色彩主题";
+
   /// "关于"
   @override
   String get about => "关于";
+
   /// "关闭"
   @override
   String get close => "关闭";
+
   /// "意见反馈"
   @override
   String get feedback => "意见反馈";
+
   /// "未找到邮件客户端,请前往github,提issue"
   @override
   String get githubIssue => "未找到邮件客户端,请前往github,提issue";
+
   /// "跟随系统"
   @override
   String get autoBySystem => "跟随系统";
+
   /// "快乐字体"
   @override
   String get fontKuaiLe => "快乐字体";
+
   /// "不能为空"
   @override
   String get fieldNotNull => "不能为空";
+
   /// "用户名"
   @override
   String get userName => "用户名";
+
   /// "密码"
   @override
   String get password => "密码";
+
   /// "去注册"
   @override
   String get toSignUp => "去注册";
+
   /// "注册"
   @override
   String get signUp => "注册";
+
   /// "确认密码"
   @override
   String get rePassword => "确认密码";
+
   /// "两次密码不一致"
   @override
   String get twoPwdDifferent => "两次密码不一致";
+
   /// "点我登录"
   @override
   String get toSignIn => "点我登录";
+
   /// "登录"
   @override
   String get signIn => "登录";
+
   /// "还没账号? "
   @override
   String get noAccount => "还没账号? ";
+
   /// "我的收藏"
   @override
   String get myFavourites => "我的收藏";
+
   /// "第三方登录"
   @override
   String get signIn3thd => "第三方登录";
+
   /// "热门搜索"
   @override
   String get searchHot => "热门搜索";
+
   /// "换一换"
   @override
   String get searchShake => "换一换";
+
   /// "历史搜索"
   @override
   String get searchHistory => "历史搜索";
+
   /// "清空"
   @override
   String get clear => "清空";
+
   /// "刷新"
   @override
   String get refresh => "刷新";
+
   /// "取消收藏"
   @override
   String get unLike => "取消收藏";
+
   /// "收藏"
   @override
   String get Like => "收藏";
+
   /// "分享"
   @override
   String get share => "分享";
+
   /// "公众号"
   @override
   String get wechatAccount => "公众号";
+
   /// "评分"
   @override
   String get rate => "评分";
+
   /// "请先登录"
   @override
   String get needLogin => "请先登录";
+
   /// "加载失败,请稍后重试"
   @override
   String get loadFailed => "加载失败,请稍后重试";
+
   /// "移除收藏"
   @override
   String get collectionRemove => "移除收藏";
+
   /// "置顶"
   @override
   String get article_tag_top => "置顶";
+
   /// "浏览器打开"
   @override
   String get openBrowser => "浏览器打开";
+
   /// "积分"
   @override
   String get coin => "积分";
+
   /// "检查更新"
   @override
   String get appUpdateCheckUpdate => "检查更新";
+
   /// "更新"
   @override
   String get appUpdateActionUpdate => "更新";
+
   /// "已是最新版本"
   @override
   String get appUpdateLeastVersion => "已是最新版本";
+
   /// "下载中,请稍后..."
   @override
   String get appUpdateDownloading => "下载中,请稍后...";
+
   /// "下载失败"
   @override
   String get appUpdateDownloadFailed => "下载失败";
+
   /// "检测到本地已下载过该版本,是否直接安装?"
   @override
   String get appUpdateReDownloadContent => "检测到本地已下载过该版本,是否直接安装?";
+
   /// "重新下载"
   @override
   String get appUpdateActionDownloadAgain => "重新下载";
+
   /// "直接安装"
   @override
   String get appUpdateActionInstallApk => "直接安装";
+
   /// "版本更新"
   @override
   String get appUpdateUpdate => "版本更新";
+
   /// "发现新版本${version},是否更新?"
   @override
   String appUpdateFoundNewVersion(String version) => "发现新版本${version},是否更新?";
+
   /// "下载已取消"
   @override
   String get appUpdateDownloadCanceled => "下载已取消";
+
   /// "再次点击返回键,取消下载"
   @override
   String get appUpdateDoubleBackTips => "再次点击返回键,取消下载";
+
   /// "操作失败"
   @override
   String get operatorError => "操作失败";
+
   /// "返回上级"
   @override
   String get back => "返回上级";
+
+  /// "简体中文"
+  @override
+  String get zh_CN => "简体中文";
+
+  /// "English"
+  @override
+  String get en_US => "English";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
 }
 
-class GeneratedLocalizationsDelegate extends LocalizationsDelegate<WidgetsLocalizations> {
+class GeneratedLocalizationsDelegate
+    extends LocalizationsDelegate<WidgetsLocalizations> {
   const GeneratedLocalizationsDelegate();
+
+  static final Map<Locale, ValueGetter<String>> _locales =
+      Map.unmodifiable(<Locale, ValueGetter<String>>{
+    const Locale("en", "US"): () => "English",
+    const Locale("zh", "CN"): () => "中文",
+  });
+
+  Map<Locale, ValueGetter<String>> get locales => _locales;
+
+  String localeName(Locale locale) {
+    return locales.entries.firstWhere((item) {
+      return item.key.toString() == locale.toString();
+    }).value();
+  }
+
   List<Locale> get supportedLocales {
-    return const <Locale>[
-      const Locale("en", "US"),
-      const Locale("zh", "CN")
-    ];
+    return List.of(locales.keys);
   }
 
   LocaleResolutionCallback resolution({Locale fallback}) {
@@ -433,14 +601,11 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<WidgetsLocali
     final String languageCode = locale != null ? locale.languageCode : "";
     if ("en_US" == lang) {
       return new SynchronousFuture<WidgetsLocalizations>(const _I18n_en_US());
-    }
-    else if ("zh_CN" == lang) {
+    } else if ("zh_CN" == lang) {
       return new SynchronousFuture<WidgetsLocalizations>(const _I18n_zh_CN());
-    }
-    else if ("en" == languageCode) {
+    } else if ("en" == languageCode) {
       return new SynchronousFuture<WidgetsLocalizations>(const _I18n_en_US());
-    }
-    else if ("zh" == languageCode) {
+    } else if ("zh" == languageCode) {
       return new SynchronousFuture<WidgetsLocalizations>(const _I18n_zh_CN());
     }
 

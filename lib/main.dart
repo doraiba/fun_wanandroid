@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
             return RefreshConfiguration(
               hideFooterWhenNotFull: true,
               child: MaterialApp(
+                debugShowCheckedModeBanner: false,
                 localizationsDelegates: [
                   I18n.delegate,
                   // 本地化的代理类
@@ -44,15 +45,17 @@ class MyApp extends StatelessWidget {
                   GlobalCupertinoLocalizations.delegate, // <-- needed for iOS
                 ],
                 supportedLocales: I18n.delegate.supportedLocales,
-                title: 'Flutter Demo',
+                title: 'Flutter',
                 locale: settingsStore.locale,
                 // localeResolutionCallback: I18n.delegate.resolution(),
                 theme: ThemeData(
-                  primarySwatch: Colors.blue,
-                  brightness: settingsStore.useDarkMode
-                      ? Brightness.dark
-                      : Brightness.light,
-                ),
+                    primarySwatch: Colors.primaries[settingsStore.icolor],
+                    brightness: settingsStore.useDarkMode
+                        ? Brightness.dark
+                        : Brightness.light,
+                    accentColor: settingsStore.useDarkMode
+                        ? Colors.primaries[settingsStore.icolor][300]
+                        : null),
                 onGenerateRoute: Routes.router.generator,
               ),
             );

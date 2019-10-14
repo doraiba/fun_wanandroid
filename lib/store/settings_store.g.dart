@@ -43,6 +43,23 @@ mixin _$SettingsStore on _SettingsStore, Store {
     }, _$localeAtom, name: '${_$localeAtom.name}_set');
   }
 
+  final _$icolorAtom = Atom(name: '_SettingsStore.icolor');
+
+  @override
+  int get icolor {
+    _$icolorAtom.context.enforceReadPolicy(_$icolorAtom);
+    _$icolorAtom.reportObserved();
+    return super.icolor;
+  }
+
+  @override
+  set icolor(int value) {
+    _$icolorAtom.context.conditionallyRunInAction(() {
+      super.icolor = value;
+      _$icolorAtom.reportChanged();
+    }, _$icolorAtom, name: '${_$icolorAtom.name}_set');
+  }
+
   final _$setDarkModeAsyncAction = AsyncAction('setDarkMode');
 
   @override
@@ -55,5 +72,12 @@ mixin _$SettingsStore on _SettingsStore, Store {
   @override
   Future<void> setLocale({@required Locale value}) {
     return _$setLocaleAsyncAction.run(() => super.setLocale(value: value));
+  }
+
+  final _$setIColorAsyncAction = AsyncAction('setIColor');
+
+  @override
+  Future<void> setIColor({@required int value}) {
+    return _$setIColorAsyncAction.run(() => super.setIColor(value: value));
   }
 }
