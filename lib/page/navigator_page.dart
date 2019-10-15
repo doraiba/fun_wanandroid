@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fun_wanandroid/generated/i18n.dart';
 import 'package:fun_wanandroid/helper/widget_helper.dart';
 import 'package:fun_wanandroid/page/home_page.dart';
-import 'package:fun_wanandroid/page/my_page.dart';
+import 'package:fun_wanandroid/page/user_page.dart';
 import 'package:fun_wanandroid/page/project_page.dart';
 import 'package:fun_wanandroid/page/wechat_page.dart';
 
@@ -23,7 +23,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
     ProjectPage(),
     WechatPage(),
     Container(),
-    MyPage(),
+    UserPage(),
   ];
 
   void _pageChanged(int page) {

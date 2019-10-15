@@ -8,11 +8,14 @@ class Routes {
 
   static final String home = '/home';
   static final String setting = '/setting';
+  static final String login = '/login';
 
   static void configureRoutes() {
     router.notFoundHandler = Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return Center();
+      return Center(
+        child: Text('NOT FOUND'),
+      );
     });
 
     /// 第一个参数是路由地址，第二个参数是页面跳转和传参，第三个参数是默认的转场动画，可以看上图
@@ -20,5 +23,6 @@ class Routes {
     router.define(root, handler: rootHandler);
     router.define(home, handler: homeHandler);
     router.define(setting, handler: settingHandler);
+    router.define(login, handler: loginHandler);
   }
 }

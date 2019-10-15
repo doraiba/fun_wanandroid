@@ -6,15 +6,18 @@ import 'package:fun_wanandroid/generated/i18n.dart';
 import 'package:fun_wanandroid/helper/function_helper.dart';
 import 'package:fun_wanandroid/helper/image_helper.dart';
 import 'package:fun_wanandroid/helper/widget_helper.dart';
+import 'package:fun_wanandroid/route/routes.dart';
 import 'package:fun_wanandroid/store/settings_store.dart';
+import 'package:fun_wanandroid/store/user_store.dart';
 import 'package:provider/provider.dart';
 
-class MyPage extends StatefulWidget {
+class UserPage extends StatefulWidget {
   @override
-  _MyPageState createState() => _MyPageState();
+  _UserPageState createState() => _UserPageState();
 }
 
-class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
+class _UserPageState extends State<UserPage>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -26,29 +29,11 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Container(
-            height: 200,
-            decoration: BoxDecoration(
-              color: themeSupplier(
-                context,
-                truth: Colors.black38,
-                fal: Theme.of(context).accentColor,
-              ),
-            ),
-          ),
-          ListView.builder(
-            itemCount: 2,
-            itemBuilder: _itemBuilder,
-          )
-        ],
-      ),
+    return Consumer<UserStore>(
+      child: NotAuthUserPage(),
+      builder: (_, store, child) => store.auth == null ? child : AuthUserPage(),
     );
   }
-
-  Widget _itemBuilder(BuildContext context, int index) => _list[index];
 }
 
 class UserAccountHeader extends StatelessWidget {
@@ -192,11 +177,8 @@ class UserSetting extends StatelessWidget {
           ),
           Consumer<SettingsStore>(
             builder: (_, store, __) => ThemeTile(
-              leading: Icon(Icons.palette, color: iconColorSupplier(context)),
-              title: Text(I18n.of(context).theme),
-              trailing: Icon(
-                Icons.keyboard_arrow_down,
-              ),
+              current: store.icolor,
+              child: Icon(Icons.flag),
               onTap: (index) {
                 store.setIColor(value: index);
               },
@@ -204,51 +186,112 @@ class UserSetting extends StatelessWidget {
           ),
           Consumer<SettingsStore>(
             builder: (_, store, __) {
-              return ExpansionTile(
-                leading: Icon(
-                  Icons.language,
-                  color: iconColorSupplier(context),
-                ),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(I18n.of(context).settingLanguage),
-                    Text(
-                      {
-                        null: () => I18n.of(context).autoBySystem,
-                        ...I18n.delegate.locales
-                      }
-                          .entries
-                          .firstWhere((e) => e.key == store.locale)
-                          .value(),
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                  ],
-                ),
-                children: [
-                  RadioListTile(
-                    groupValue: store.locale,
-                    value: null,
-                    onChanged: (value) {
-                      store.setLocale(value: value);
-                    },
-                    title: Text(I18n.of(context).autoBySystem),
-                  )
-                ]..addAll(I18n.delegate.supportedLocales
-                    .map((item) => RadioListTile(
-                          groupValue: store.locale,
-                          value: item,
-                          title: Text(I18n.delegate.localeName(item)),
-                          onChanged: (value) {
-                            print("set $value");
-                            store.setLocale(value: value);
-                          },
-                        ))
-                    .toList()),
+              return LanguageTile(
+                locale: store.locale,
+                onChanged: (locale) => store.setLocale(value: locale),
               );
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+class AuthUserPage extends StatefulWidget {
+  AuthUserPage({Key key}) : super(key: key);
+
+  _AuthUserPageState createState() => _AuthUserPageState();
+}
+
+class _AuthUserPageState extends State<AuthUserPage> {
+  List<Widget> _list = [
+    UserAccountHeader(),
+    UserSetting(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          Container(
+            height: 200,
+            decoration: BoxDecoration(
+              color: themeSupplier(
+                context,
+                truth: Colors.black38,
+                fal: Theme.of(context).accentColor,
+              ),
+            ),
+          ),
+          ListView.builder(
+            itemCount: 2,
+            itemBuilder: _itemBuilder,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _itemBuilder(BuildContext context, int index) => _list[index];
+}
+
+class NotAuthUserPage extends StatefulWidget {
+  @override
+  _NotAuthUserPageState createState() => _NotAuthUserPageState();
+}
+
+class _NotAuthUserPageState extends State<NotAuthUserPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Builder(
+        builder: (BuildContext context) => Column(
+          // fit: StackFit.expand,
+          children: <Widget>[
+            Image.asset(ImageHelper.wrapAssets('luxun.jpg'),
+                fit: BoxFit.fitWidth),
+            Column(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    Routes.router.navigateTo(context, Routes.login);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top: 20, bottom: 20),
+                    height: 120,
+                    width: 120,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: Colors.blue[200], shape: BoxShape.circle),
+                    child: Text(
+                      I18n.of(context).needLogin,
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Text(
+                    '读书人的事情,怎么能叫偷?',
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                ListTile(
+                  title: Text('读书人的事情,怎么能叫偷?'),
+                  trailing: Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: Text(
+                      '- 孔乙己',
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

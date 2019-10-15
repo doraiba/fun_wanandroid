@@ -7,6 +7,7 @@ import 'package:fun_wanandroid/route/routes.dart';
 import 'package:fun_wanandroid/store/category_store.dart';
 import 'package:fun_wanandroid/store/preferences_service.dart';
 import 'package:fun_wanandroid/store/settings_store.dart';
+import 'package:fun_wanandroid/store/user_store.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -26,6 +27,9 @@ class MyApp extends StatelessWidget {
                 SettingsStore(preferencesService)),
         Provider(
           builder: (_) => CategorytStore(),
+        ),
+        ProxyProvider<PreferencesService, UserStore>(
+          builder: (_, preferencesService, __) => UserStore(preferencesService),
         )
       ],
       child: Consumer<SettingsStore>(

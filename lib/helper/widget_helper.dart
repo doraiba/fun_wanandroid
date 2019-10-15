@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:fun_wanandroid/generated/i18n.dart';
+import 'package:fun_wanandroid/helper/function_helper.dart';
 import 'package:fun_wanandroid/helper/image_helper.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
@@ -190,31 +193,38 @@ class ConsumerObserver2<T1, T2> extends StatelessWidget {
 class ThemeTile extends StatelessWidget {
   final Widget leading;
   final Widget title;
+  final Widget trailing;
+
   final ValueChanged<bool> onExpansionChanged;
+  final int current;
   final Widget child;
   final Color backgroundColor;
-  final Widget trailing;
   final bool initiallyExpanded;
   final ValueChanged<int> onTap;
   const ThemeTile({
     Key key,
     this.leading,
-    @required this.title,
+    this.title,
     this.backgroundColor,
     this.onExpansionChanged,
     this.child,
     this.trailing,
     this.initiallyExpanded = false,
     this.onTap,
+    this.current,
   })  : assert(initiallyExpanded != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      leading: leading,
-      title: title,
-      trailing: trailing,
+      leading:
+          leading ?? Icon(Icons.palette, color: iconColorSupplier(context)),
+      title: title ?? Text(I18n.of(context).theme),
+      trailing: trailing ??
+          Icon(
+            Icons.keyboard_arrow_down,
+          ),
       children: <Widget>[
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
@@ -229,11 +239,26 @@ class ThemeTile extends StatelessWidget {
                   child: Container(
                     height: 40,
                     width: 40,
-                    child: child,
+                    alignment: Alignment.center,
+                    child: current == item.key ? child : null,
                   ),
                 ),
               );
-            }).toList(),
+            }).toList()
+              ..add(Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: _onTap(Random().nextInt(Colors.primaries.length)),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border:
+                            Border.all(color: Theme.of(context).accentColor)),
+                    height: 40,
+                    width: 40,
+                    child: Icon(Icons.help_outline),
+                  ),
+                ),
+              )),
           ),
         )
       ],
@@ -242,5 +267,69 @@ class ThemeTile extends StatelessWidget {
 
   GestureTapCallback _onTap(int index) {
     return onTap == null ? null : () => onTap(index);
+  }
+}
+
+class LanguageTile extends StatelessWidget {
+  final Widget leading;
+  final Widget title;
+  final Widget trailing;
+  final ValueChanged<bool> onExpansionChanged;
+  final Locale locale;
+  final Color backgroundColor;
+  final bool initiallyExpanded;
+  final ValueChanged<Locale> onChanged;
+
+  const LanguageTile({
+    Key key,
+    this.backgroundColor,
+    this.onExpansionChanged,
+    this.locale,
+    this.initiallyExpanded = false,
+    this.onChanged,
+    this.leading,
+    this.title,
+    this.trailing,
+  })  : assert(initiallyExpanded != null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      leading:
+          leading ?? Icon(Icons.language, color: iconColorSupplier(context)),
+      title: title ??
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(I18n.of(context).settingLanguage),
+              Text(
+                <Locale, ValueGetter<String>>{
+                  null: () => I18n.of(context).autoBySystem,
+                  ...I18n.delegate.locales
+                }.entries.firstWhere((e) {
+                  print(e.key == locale);
+                  return e.key == locale;
+                }).value(),
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ],
+          ),
+      children: [
+        RadioListTile(
+          groupValue: locale,
+          value: null,
+          onChanged: onChanged,
+          title: Text(I18n.of(context).autoBySystem),
+        )
+      ]..addAll(I18n.delegate.supportedLocales
+          .map((item) => RadioListTile(
+                groupValue: locale,
+                value: item,
+                title: Text(I18n.delegate.localeName(item)),
+                onChanged: onChanged,
+              ))
+          .toList()),
+    );
   }
 }
