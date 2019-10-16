@@ -18,6 +18,14 @@ abstract class _SignInStore with Store {
   @observable
   bool autovalidate = false;
 
+  @observable
+  bool watch = true;
+
+  @action
+  Future setWatch(bool value) async {
+    this.watch = value;
+  }
+
   @action
   Future setAutovalidate({@required bool value}) async {
     this.autovalidate = value;

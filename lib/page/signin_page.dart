@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -115,8 +116,9 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         Container(padding: EdgeInsets.only(bottom: 10)),
                         Container(
-                          child: TextFormField(
-                            obscureText: true,
+                            child: Observer(
+                          builder: (_) => TextFormField(
+                            obscureText: store.watch,
                             decoration: InputDecoration(
                               hintText: I18n.of(context).password,
                               hintStyle: TextStyle(
@@ -126,11 +128,23 @@ class _SignInPageState extends State<SignInPage> {
                                 Icons.lock,
                                 color: Theme.of(context).buttonColor,
                               ),
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  store.setWatch(!store.watch);
+                                },
+                                child: Icon(
+                                  CupertinoIcons.eye,
+                                  size: 30,
+                                  color: store.watch
+                                      ? Theme.of(context).hintColor
+                                      : Theme.of(context).accentColor,
+                                ),
+                              ),
                             ),
                             onSaved: (val) => store.password = val,
                             validator: store.validPassWord,
                           ),
-                        ),
+                        )),
                         Container(
                           padding: EdgeInsets.only(bottom: 10),
                         ),

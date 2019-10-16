@@ -26,6 +26,23 @@ mixin _$SignInStore on _SignInStore, Store {
     }, _$autovalidateAtom, name: '${_$autovalidateAtom.name}_set');
   }
 
+  final _$watchAtom = Atom(name: '_SignInStore.watch');
+
+  @override
+  bool get watch {
+    _$watchAtom.context.enforceReadPolicy(_$watchAtom);
+    _$watchAtom.reportObserved();
+    return super.watch;
+  }
+
+  @override
+  set watch(bool value) {
+    _$watchAtom.context.conditionallyRunInAction(() {
+      super.watch = value;
+      _$watchAtom.reportChanged();
+    }, _$watchAtom, name: '${_$watchAtom.name}_set');
+  }
+
   final _$usernameAtom = Atom(name: '_SignInStore.username');
 
   @override
@@ -75,6 +92,13 @@ mixin _$SignInStore on _SignInStore, Store {
       super.signFuture = value;
       _$signFutureAtom.reportChanged();
     }, _$signFutureAtom, name: '${_$signFutureAtom.name}_set');
+  }
+
+  final _$setWatchAsyncAction = AsyncAction('setWatch');
+
+  @override
+  Future setWatch(bool value) {
+    return _$setWatchAsyncAction.run(() => super.setWatch(value));
   }
 
   final _$setAutovalidateAsyncAction = AsyncAction('setAutovalidate');
