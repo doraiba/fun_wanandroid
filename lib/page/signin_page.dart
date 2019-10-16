@@ -99,14 +99,14 @@ class _SignInPageState extends State<SignInPage> {
                             builder: (_, userStore, __) => TextFormField(
                               initialValue: userStore.lastLoginName,
                               decoration: InputDecoration(
-                                labelText: I18n.of(context).userName,
-                                labelStyle: TextStyle(
+                                hintText: I18n.of(context).userName,
+                                hintStyle: TextStyle(
                                     color: Theme.of(context).buttonColor),
                                 // border: InputBorder.none,
-                                // icon: Icon(
-                                //   Icons.email,
-                                //   color: Theme.of(context).buttonColor,
-                                // ),
+                                prefixIcon: Icon(
+                                  Icons.perm_identity,
+                                  color: Theme.of(context).buttonColor,
+                                ),
                               ),
                               onSaved: (val) => store.username = val,
                               validator: store.validUserName,
@@ -118,14 +118,14 @@ class _SignInPageState extends State<SignInPage> {
                           child: TextFormField(
                             obscureText: true,
                             decoration: InputDecoration(
-                              labelText: I18n.of(context).password,
-                              labelStyle: TextStyle(
+                              hintText: I18n.of(context).password,
+                              hintStyle: TextStyle(
                                   color: Theme.of(context).buttonColor),
                               // border: InputBorder.none,
-                              // icon: Icon(
-                              //   Icons.lock,
-                              //   color: Theme.of(context).buttonColor,
-                              // ),
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: Theme.of(context).buttonColor,
+                              ),
                             ),
                             onSaved: (val) => store.password = val,
                             validator: store.validPassWord,
