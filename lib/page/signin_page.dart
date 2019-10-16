@@ -1,0 +1,210 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:fun_wanandroid/generated/i18n.dart';
+import 'package:fun_wanandroid/helper/dio_helper.dart';
+import 'package:fun_wanandroid/helper/image_helper.dart';
+import 'package:fun_wanandroid/model/user.dart';
+import 'package:fun_wanandroid/route/routes.dart';
+import 'package:fun_wanandroid/store/signin_store.dart';
+import 'package:fun_wanandroid/store/user_store.dart';
+import 'package:mobx/mobx.dart';
+import 'package:provider/provider.dart';
+
+class SignInPage extends StatefulWidget {
+  SignInPage({Key key}) : super(key: key);
+
+  _SignInPageState createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
+  SignInStore store = SignInStore();
+
+  Widget get loading => RaisedButton(
+        onPressed: null,
+        disabledColor: Theme.of(context).accentColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+        child: SizedBox(
+          height: 24,
+          width: 24,
+          child: CircularProgressIndicator(
+            strokeWidth: 1.5,
+            valueColor: AlwaysStoppedAnimation(Colors.white60),
+          ),
+        ),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).accentColor.withOpacity(.7),
+      body: Container(
+        child: ListView(
+          // physics: BouncingScrollPhysics(),
+          children: <Widget>[
+            SizedBox(height: 30),
+            CircleAvatar(
+              child: Image.asset(ImageHelper.wrapAssets('origami.png')),
+              maxRadius: 50,
+              backgroundColor: Colors.transparent,
+            ),
+            SizedBox(height: 20),
+            _buildForm(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                FlatButton(
+                  onPressed: () {
+                    Routes.router.navigateTo(context, Routes.register);
+                  },
+                  child: Text(
+                    I18n.of(context).signUp,
+                    style: TextStyle(
+                        color: Theme.of(context).accentColor, fontSize: 18),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildForm() {
+    return Builder(
+      builder: (context) => Form(
+        key: store.signInFormKey,
+        autovalidate: store.autovalidate,
+        child: Container(
+          padding: EdgeInsets.all(20),
+          child: Stack(
+            children: <Widget>[
+              ClipPath(
+                clipper: RoundedDiagonalPathClipper(),
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  height: 400,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      color: Colors.white24),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(height: 90),
+                        Container(
+                          child: Consumer<UserStore>(
+                            builder: (_, userStore, __) => TextFormField(
+                              initialValue: userStore.lastLoginName,
+                              decoration: InputDecoration(
+                                labelText: I18n.of(context).userName,
+                                labelStyle: TextStyle(
+                                    color: Theme.of(context).buttonColor),
+                                // border: InputBorder.none,
+                                // icon: Icon(
+                                //   Icons.email,
+                                //   color: Theme.of(context).buttonColor,
+                                // ),
+                              ),
+                              onSaved: (val) => store.username = val,
+                              validator: store.validUserName,
+                            ),
+                          ),
+                        ),
+                        Container(padding: EdgeInsets.only(bottom: 10)),
+                        Container(
+                          child: TextFormField(
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              labelText: I18n.of(context).password,
+                              labelStyle: TextStyle(
+                                  color: Theme.of(context).buttonColor),
+                              // border: InputBorder.none,
+                              // icon: Icon(
+                              //   Icons.lock,
+                              //   color: Theme.of(context).buttonColor,
+                              // ),
+                            ),
+                            onSaved: (val) => store.password = val,
+                            validator: store.validPassWord,
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(bottom: 10),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            FlatButton(
+                              onPressed: null,
+                              child: Text(I18n.of(context).forgot),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  CircleAvatar(
+                    child: Icon(Icons.person),
+                    radius: 40,
+                    backgroundColor: Theme.of(context).accentColor,
+                  )
+                ],
+              ),
+              Container(
+                height: 420,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Consumer<UserStore>(
+                    builder: (_, userStore, __) {
+                      return Observer(
+                        builder: (_) {
+                          var future = store.signFuture;
+                          if (future?.status == FutureStatus.pending) {
+                            return loading;
+                          }
+                          return RaisedButton(
+                            onPressed: store.submit((username, password) async {
+                              try {
+                                AsyncAction('\$\$login').run(() async {
+                                  print("======$username,$password======");
+                                  User user = await store.sign(
+                                      username: username, password: password);
+                                  userStore.setAuth(value: user);
+                                  userStore.setLastLoginName(user.nickname);
+                                  Navigator.of(context).pop(user);
+                                });
+                              } catch (e) {
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text(DioHelper.parseError(e)),
+                                ));
+                              }
+                            }),
+                            child: Text(
+                              I18n.of(context).signIn,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40)),
+                            color: Theme.of(context).accentColor,
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

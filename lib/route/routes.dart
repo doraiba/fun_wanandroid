@@ -10,6 +10,8 @@ class Routes {
   static final String setting = '/setting';
   static final String login = '/login';
 
+  static final String register = '/register';
+
   static void configureRoutes() {
     router.notFoundHandler = Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -23,6 +25,7 @@ class Routes {
     router.define(root, handler: rootHandler);
     router.define(home, handler: homeHandler);
     router.define(setting, handler: settingHandler);
-    router.define(login, handler: loginHandler);
+    router.define(login, handler: signInHandler);
+    router.define(register, handler: signUpHandler);
   }
 }

@@ -47,6 +47,9 @@ dependencies:
   shimmer:
   json_annotation:
   flutter_html:
+  flare_flutter:
+  flutter_custom_clippers:
+  validators:
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +81,7 @@ flutter:
   assets:
     - assets/images/
     - assets/animations/
+    - assets/flare/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

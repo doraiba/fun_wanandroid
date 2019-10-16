@@ -211,6 +211,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.10.9"
+  flare_dart:
+    dependency: transitive
+    description:
+      name: flare_dart
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.2.2"
+  flare_flutter:
+    dependency: "direct main"
+    description:
+      name: flare_flutter
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.6.2"
   fluro:
     dependency: "direct main"
     description:
@@ -230,6 +244,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.1"
+  flutter_custom_clippers:
+    dependency: "direct main"
+    description:
+      name: flutter_custom_clippers
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.0"
   flutter_html:
     dependency: "direct main"
     description:
@@ -679,6 +700,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.2"
+  validators:
+    dependency: "direct main"
+    description:
+      name: validators
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0+1"
   vector_math:
     dependency: transitive
     description:

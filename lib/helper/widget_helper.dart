@@ -308,7 +308,6 @@ class LanguageTile extends StatelessWidget {
                   null: () => I18n.of(context).autoBySystem,
                   ...I18n.delegate.locales
                 }.entries.firstWhere((e) {
-                  print(e.key == locale);
                   return e.key == locale;
                 }).value(),
                 style: Theme.of(context).textTheme.caption,

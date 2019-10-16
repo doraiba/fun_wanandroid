@@ -71,5 +71,6 @@
   "operatorError": "operator error",
   "back":"返回上级",
   "zh_CN":"简体中文",
-  "en_US":"English"
+  "en_US":"English",
+  "forgot":"Forgot Password"
 }

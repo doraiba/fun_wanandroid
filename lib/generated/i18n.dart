@@ -252,6 +252,9 @@ class I18n implements WidgetsLocalizations {
 
   /// "English"
   String get en_US => "English";
+
+  /// "Forgot Password"
+  String get forgot => "Forgot Password";
 }
 
 class _I18n_en_US extends I18n {
@@ -556,14 +559,16 @@ class _I18n_zh_CN extends I18n {
   @override
   String get en_US => "English";
 
+  /// "忘记密码"
+  @override
+  String get forgot => "忘记密码";
+
   @override
   TextDirection get textDirection => TextDirection.ltr;
 }
 
 class GeneratedLocalizationsDelegate
     extends LocalizationsDelegate<WidgetsLocalizations> {
-  const GeneratedLocalizationsDelegate();
-
   static final Map<Locale, ValueGetter<String>> _locales =
       Map.unmodifiable(<Locale, ValueGetter<String>>{
     const Locale("en", "US"): () => "English",
@@ -578,6 +583,7 @@ class GeneratedLocalizationsDelegate
     }).value();
   }
 
+  const GeneratedLocalizationsDelegate();
   List<Locale> get supportedLocales {
     return List.of(locales.keys);
   }

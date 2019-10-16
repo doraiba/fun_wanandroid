@@ -71,5 +71,6 @@
   "operatorError": "操作失败",
   "back":"返回上级",
   "zh_CN":"简体中文",
-  "en_US":"English"
+  "en_US":"English",
+  "forgot":"忘记密码"
 }

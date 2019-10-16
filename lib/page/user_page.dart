@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fun_wanandroid/generated/i18n.dart';
@@ -21,15 +22,10 @@ class _UserPageState extends State<UserPage>
   @override
   bool get wantKeepAlive => true;
 
-  List<Widget> _list = [
-    UserAccountHeader(),
-    UserSetting(),
-  ];
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Consumer<UserStore>(
+    return ConsumerObserver<UserStore>(
       child: NotAuthUserPage(),
       builder: (_, store, child) => store.auth == null ? child : AuthUserPage(),
     );
@@ -58,9 +54,11 @@ class UserAccountHeader extends StatelessWidget {
                   SizedBox(
                     height: 50.0,
                   ),
-                  Text(
-                    "iterminal",
-                    style: Theme.of(context).textTheme.title,
+                  Consumer<UserStore>(
+                    builder: (_, userStore, __) => Text(
+                      userStore.auth.nickname,
+                      style: Theme.of(context).textTheme.title,
+                    ),
                   ),
                   SizedBox(
                     height: 8.0,
@@ -228,7 +226,21 @@ class _AuthUserPageState extends State<AuthUserPage> {
           ListView.builder(
             itemCount: 2,
             itemBuilder: _itemBuilder,
-          )
+          ),
+          SafeArea(
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Consumer<UserStore>(
+                builder: (_, store, __) {
+                  return IconButton(
+                    tooltip: I18n.of(context).logout,
+                    onPressed: store.logout,
+                    icon: Icon(Icons.exit_to_app, size: 28),
+                  );
+                },
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -246,50 +258,35 @@ class _NotAuthUserPageState extends State<NotAuthUserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFFD300),
       body: Builder(
         builder: (BuildContext context) => Column(
           // fit: StackFit.expand,
           children: <Widget>[
-            Image.asset(ImageHelper.wrapAssets('luxun.jpg'),
-                fit: BoxFit.fitWidth),
-            Column(
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    Routes.router.navigateTo(context, Routes.login);
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(top: 20, bottom: 20),
-                    height: 120,
-                    width: 120,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: Colors.blue[200], shape: BoxShape.circle),
-                    child: Text(
-                      I18n.of(context).needLogin,
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Text(
-                    '读书人的事情,怎么能叫偷?',
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                ListTile(
-                  title: Text('读书人的事情,怎么能叫偷?'),
-                  trailing: Padding(
-                    padding: EdgeInsets.only(top: 50),
-                    child: Text(
-                      '- 孔乙己',
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                  ),
-                )
-              ],
+            Flexible(
+              flex: 8,
+              child: FlareActor(
+                'assets/flare/bus.flr',
+                alignment: Alignment.center,
+                fit: BoxFit.contain,
+                animation: 'driving',
+              ),
             ),
+            Flexible(
+              flex: 2,
+              child: RaisedButton(
+                onPressed: () {
+                  Routes.router.navigateTo(context, Routes.login);
+                },
+                child: Container(
+                  child: Text(I18n.of(context).needLogin),
+                ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50)),
+                elevation: 4,
+                color: Color(0xFFFFB900),
+              ),
+            )
           ],
         ),
       ),

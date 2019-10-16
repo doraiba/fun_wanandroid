@@ -88,7 +88,7 @@ class WanAndroidRepository {
 
   /// 登录
   /// [dio._init] 添加了拦截器 设置了自动cookie.
-  static Future login(String username, String password) async {
+  static Future<User> login(String username, String password) async {
     var response = await dio.post<Map>('user/login', queryParameters: {
       'username': username,
       'password': password,
