@@ -13,6 +13,7 @@ import 'package:fun_wanandroid/route/routes.dart';
 import 'package:fun_wanandroid/store/signin_store.dart';
 import 'package:fun_wanandroid/store/user_store.dart';
 import 'package:mobx/mobx.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 
 class SignInPage extends StatefulWidget {
@@ -193,20 +194,18 @@ class _SignInPageState extends State<SignInPage> {
                           }
                           return RaisedButton(
                             onPressed: store.submit((username, password) async {
-                              try {
-                                AsyncAction('\$\$login').run(() async {
+                              AsyncAction('\$\$login').run(() async {
+                                try {
                                   print("======$username,$password======");
                                   User user = await store.sign(
                                       username: username, password: password);
                                   userStore.setAuth(value: user);
                                   userStore.setLastLoginName(user.nickname);
                                   Navigator.of(context).pop(user);
-                                });
-                              } catch (e) {
-                                Scaffold.of(context).showSnackBar(SnackBar(
-                                  content: Text(DioHelper.parseError(e)),
-                                ));
-                              }
+                                } catch (e) {
+                                  showToast(DioHelper.parseError(e));
+                                }
+                              });
                             }),
                             child: Text(
                               I18n.of(context).signIn,
