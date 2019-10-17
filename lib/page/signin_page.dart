@@ -159,11 +159,7 @@ class _SignInPageState extends State<SignInPage> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             FlatButton(
-                              onPressed: () {
-                                Provider.of<UserStore>(context, listen: false)
-                                    .setLastLoginName(
-                                        'name${Random().nextInt(6)}');
-                              },
+                              onPressed: null,
                               child: Text(I18n.of(context).forgot),
                             )
                           ],
