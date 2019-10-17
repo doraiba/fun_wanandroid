@@ -15,8 +15,12 @@ typedef FutureFunction<S, T> = ObservableFuture<T> Function(S store);
 typedef FutureSupplier<T> = ObservableFuture<T> Function();
 typedef Func<T> = Widget Function(T item);
 
-class WidgetHelper {
-  static WillPopCallback _onWillPop() {
+class WillPopScopeWidget extends StatelessWidget {
+  final Widget child;
+
+  const WillPopScopeWidget({Key key, this.child}) : super(key: key);
+
+  WillPopCallback _onWillPop() {
     DateTime _lastPressed;
     return () async {
       if (_lastPressed == null ||
@@ -29,47 +33,83 @@ class WidgetHelper {
     };
   }
 
-  static Widget popScope({@required Widget child, Key key}) {
+  @override
+  Widget build(BuildContext context) {
     return WillPopScope(
       key: key,
       onWillPop: _onWillPop(),
       child: child,
     );
   }
+}
 
-  static Widget observerWrap<T>(
-      {@required FutureSupplier supplier,
-      @required WrapBuilder<T> builder,
-      VoidFutureCallBack refresh,
-      Widget loading}) {
+class ConsumerFutureObserver<S, T> extends StatelessWidget {
+  final FutureFunction<S, T> supplier;
+  final WrapBuilder<T> builder;
+  final VoidFutureCallBack refresh;
+  final Widget loading;
+  final Widget rejected;
+  const ConsumerFutureObserver(
+      {Key key,
+      this.supplier,
+      this.builder,
+      this.refresh,
+      this.loading,
+      this.rejected})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (_, store, __) => FutureObserver(
+        refresh: refresh,
+        loading: loading,
+        rejected: rejected,
+        supplier: () => supplier(store),
+        builder: builder,
+      ),
+    );
+  }
+}
+
+class FutureObserver<T> extends StatelessWidget {
+  final FutureSupplier supplier;
+  final WrapBuilder<T> builder;
+  final VoidFutureCallBack refresh;
+  final Widget loading;
+  final Widget rejected;
+  const FutureObserver(
+      {Key key,
+      @required this.supplier,
+      @required this.builder,
+      this.refresh,
+      this.loading,
+      this.rejected})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Observer(
       builder: (context) {
         ObservableFuture future = supplier();
-        switch (future.status) {
-          case FutureStatus.pending:
-            return loading ??
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    CircularProgressIndicator(),
-                    Text('Loading items...'),
-                  ],
-                );
 
+        if (future?.status == null || future.status == FutureStatus.pending) {
+          return loading ??
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  CircularProgressIndicator(),
+                  Text('Loading items...'),
+                ],
+              );
+        }
+
+        switch (future.status) {
           case FutureStatus.rejected:
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  'Failed to load items.',
-                  style: TextStyle(color: Colors.red),
-                ),
-                RaisedButton(
-                  child: const Text('Tap to try again'),
+            return rejected ??
+                OnlyTips(
                   onPressed: refresh,
-                )
-              ],
-            );
+                );
 
           default:
             final T result = future.result;
@@ -78,12 +118,20 @@ class WidgetHelper {
       },
     );
   }
+}
 
-  static Widget navigator<T>(
-      {@required List<T> data,
-      @required Func<T> builder,
-      BoxDecoration decoration,
-      EdgeInsetsGeometry margin = const EdgeInsets.only(right: 20)}) {
+class NavigatorBuilder<T> extends StatelessWidget {
+  final EdgeInsetsGeometry margin;
+  final BoxDecoration decoration;
+  final List<T> data;
+  final Func<T> builder;
+  NavigatorBuilder(
+      {@required this.data,
+      @required this.builder,
+      this.decoration,
+      this.margin = const EdgeInsets.only(right: 20)});
+  @override
+  Widget build(BuildContext context) {
     return Container(
       margin: margin,
       decoration: decoration,
@@ -98,6 +146,7 @@ class WidgetHelper {
   }
 }
 
+/// 错误提示
 class OnlyTips extends StatelessWidget {
   final Widget header;
   final String tips;

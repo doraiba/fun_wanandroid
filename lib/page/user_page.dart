@@ -10,7 +10,9 @@ import 'package:fun_wanandroid/helper/widget_helper.dart';
 import 'package:fun_wanandroid/route/routes.dart';
 import 'package:fun_wanandroid/store/settings_store.dart';
 import 'package:fun_wanandroid/store/user_store.dart';
+import 'package:fun_wanandroid/store/userinfo_store.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UserPage extends StatefulWidget {
   @override
@@ -27,7 +29,12 @@ class _UserPageState extends State<UserPage>
     super.build(context);
     return ConsumerObserver<UserStore>(
       child: NotAuthUserPage(),
-      builder: (_, store, child) => store.auth == null ? child : AuthUserPage(),
+      builder: (_, store, child) => store.auth == null
+          ? child
+          : Provider(
+              builder: (_) => UserInfoStore(),
+              child: AuthUserPage(),
+            ),
     );
   }
 }
@@ -63,10 +70,21 @@ class UserAccountHeader extends StatelessWidget {
                   SizedBox(
                     height: 8.0,
                   ),
-                  Text(
-                    "${I18n.of(context).coin}: 10",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(decoration: TextDecoration.underline),
+                  Consumer<UserInfoStore>(
+                    builder: (_, store, __) {
+                      return FutureObserver(
+                          supplier: () => store.coinStore.coinFuture,
+                          loading: CupertinoActivityIndicator(),
+                          rejected: Text(I18n.of(context).operatorError),
+                          builder: (_, data, ___) {
+                            return Text(
+                              "${I18n.of(context).coin}: $data",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline),
+                            );
+                          });
+                    },
                   ),
                   SizedBox(
                     height: 13.0,
@@ -78,11 +96,7 @@ class UserAccountHeader extends StatelessWidget {
                       children: <Widget>[
                         Expanded(
                           child: ListTile(
-                            title: Text(
-                              "302",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                            title: ,
                             subtitle: Text(
                                 I18n.of(context).tabProject.toUpperCase(),
                                 textAlign: TextAlign.center,
@@ -208,6 +222,8 @@ class _AuthUserPageState extends State<AuthUserPage> {
     UserSetting(),
   ];
 
+  var _controller = RefreshController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -223,9 +239,18 @@ class _AuthUserPageState extends State<AuthUserPage> {
               ),
             ),
           ),
-          ListView.builder(
-            itemCount: 2,
-            itemBuilder: _itemBuilder,
+          SmartRefresher(
+            header: MaterialClassicHeader(),
+            onRefresh: () {
+              Future.delayed(Duration(seconds: 2)).then((_) {
+                _controller.refreshCompleted();
+              });
+            },
+            controller: _controller,
+            child: ListView.builder(
+              itemCount: 2,
+              itemBuilder: _itemBuilder,
+            ),
           ),
           SafeArea(
             child: Align(

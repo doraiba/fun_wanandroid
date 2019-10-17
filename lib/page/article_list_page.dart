@@ -30,7 +30,7 @@ class _ArticleListPageState extends State<ArticleListPage>
       dispose: (_, store) => store.dispose(),
       child: Consumer<ProjectPageStore>(
         builder: (_, store, __) {
-          return WidgetHelper.observerWrap<Map<String, dynamic>>(
+          return FutureObserver<Map<String, dynamic>>(
             loading: SkeletonList(
               builder: (BuildContext context, int index) => SkeletonListItem(),
             ),

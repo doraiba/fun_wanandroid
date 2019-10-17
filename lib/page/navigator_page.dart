@@ -40,7 +40,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WidgetHelper.popScope(
+      body: WillPopScopeWidget(
         child: PageView(
           physics: NeverScrollableScrollPhysics(),
           controller: _pageController,

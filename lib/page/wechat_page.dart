@@ -20,7 +20,7 @@ class _WechatPageState extends State<WechatPage>
     super.build(context);
     return Consumer<CategorytStore>(
       builder: (_, store, __) {
-        return WidgetHelper.observerWrap<List<Tree>>(
+        return FutureObserver<List<Tree>>(
             supplier: () => store.wechatFuture,
             refresh: () async => store.fetchLatest(),
             builder: (c, data, _) {
@@ -30,7 +30,7 @@ class _WechatPageState extends State<WechatPage>
                   appBar: AppBar(
                     title: Stack(
                       children: <Widget>[
-                        WidgetHelper.navigator(
+                        NavigatorBuilder(
                           data: data,
                           builder: (item) => Tab(
                             text: '${item.name}',

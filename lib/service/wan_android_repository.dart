@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fun_wanandroid/model/article.dart';
 import 'package:fun_wanandroid/model/banner.dart';
 import 'package:fun_wanandroid/model/coin_record.dart';
@@ -6,6 +8,7 @@ import 'package:fun_wanandroid/model/search.dart';
 import 'package:fun_wanandroid/model/tree.dart';
 import 'package:fun_wanandroid/model/user.dart';
 import 'package:fun_wanandroid/helper/dio_helper.dart';
+import 'package:fun_wanandroid/model/web_site.dart';
 
 class WanAndroidRepository {
   // 轮播
@@ -118,11 +121,9 @@ class WanAndroidRepository {
   }
 
   // 收藏列表
-  static Future fetchCollectList(int pageNum) async {
+  static Future<Map<String, dynamic>> fetchCollect(int pageNum) async {
     var response = await dio.get<Map>('lg/collect/list/$pageNum/json');
-    return response.data['datas']
-        .map<Article>((item) => Article.fromMap(item))
-        .toList();
+    return response.data;
   }
 
   // 收藏
@@ -142,7 +143,7 @@ class WanAndroidRepository {
   }
 
   // 个人积分
-  static Future fetchCoin() async {
+  static Future<int> fetchCoin() async {
     var response = await dio.get('lg/coin/getcount/json');
     return response.data;
   }
@@ -163,5 +164,16 @@ class WanAndroidRepository {
   static Future fetchRankingList(int pageNum) async {
     var response = await dio.get('coin/rank/$pageNum/json');
     return response.data['datas'];
+  }
+
+  static Future<Map<String, dynamic>> fetchShare(int page) async {
+    var response = await dio.get('user/lg/private_articles/$page/json');
+    return response.data['shareArticles'];
+  }
+
+  /// 获取个人项目
+  static Future<List<WebSite>> fetchSite() async {
+    var response = await dio.get('lg/collect/usertools/json');
+    return response.data.map((e) => WebSite.fromJson(e)).toList();
   }
 }

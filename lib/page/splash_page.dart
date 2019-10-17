@@ -26,7 +26,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WidgetHelper.popScope(
+      body: WillPopScopeWidget(
         child: Stack(
           children: <Widget>[
             Container(
