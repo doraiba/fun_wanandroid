@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -8,6 +10,7 @@ import 'package:fun_wanandroid/helper/image_helper.dart';
 import 'package:fun_wanandroid/helper/widget_helper.dart';
 import 'package:fun_wanandroid/model/user.dart';
 import 'package:fun_wanandroid/route/routes.dart';
+import 'package:fun_wanandroid/store/settings_store.dart';
 import 'package:fun_wanandroid/store/signin_store.dart';
 import 'package:fun_wanandroid/store/user_store.dart';
 import 'package:mobx/mobx.dart';
@@ -171,10 +174,18 @@ class _SignInPageState extends State<SignInPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  CircleAvatar(
-                    child: Icon(Icons.person),
-                    radius: 40,
-                    backgroundColor: Theme.of(context).accentColor,
+                  Consumer<SettingsStore>(
+                    builder: (_, store, __) => GestureDetector(
+                      onTap: () {
+                        store.setIColor(
+                            value: Random().nextInt(Colors.primaries.length));
+                      },
+                      child: CircleAvatar(
+                        child: Icon(Icons.person),
+                        radius: 40,
+                        backgroundColor: Theme.of(context).accentColor,
+                      ),
+                    ),
                   )
                 ],
               ),
