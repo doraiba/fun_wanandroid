@@ -332,3 +332,24 @@ class LanguageTile extends StatelessWidget {
     );
   }
 }
+
+class RaiseButtonLading extends StatelessWidget {
+  const RaiseButtonLading({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      onPressed: null,
+      disabledColor: Theme.of(context).accentColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      child: SizedBox(
+        height: 24,
+        width: 24,
+        child: CircularProgressIndicator(
+          strokeWidth: 1.5,
+          valueColor: AlwaysStoppedAnimation(Colors.white60),
+        ),
+      ),
+    );
+  }
+}

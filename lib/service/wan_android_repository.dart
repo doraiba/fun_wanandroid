@@ -97,7 +97,7 @@ class WanAndroidRepository {
   }
 
   /// 注册
-  static Future register(
+  static Future<User> register(
       String username, String password, String rePassword) async {
     var response = await dio.post<Map>('user/register', queryParameters: {
       'username': username,

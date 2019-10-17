@@ -51,7 +51,7 @@ class PreferencesService {
   }
 
   set auth(User user) {
-    if (user == null) return;
-    _sharedPreferences.setString(_auth, json.encode(user));
+    _sharedPreferences.setString(
+        _auth, user == null ? null : json.encode(user));
   }
 }

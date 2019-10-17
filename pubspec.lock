@@ -450,6 +450,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.3.9+1"
+  oktoast:
+    dependency: "direct main"
+    description:
+      name: oktoast
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.2.0"
   package_config:
     dependency: transitive
     description:

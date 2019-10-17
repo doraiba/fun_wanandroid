@@ -1,38 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:fun_wanandroid/generated/i18n.dart';
+import 'package:fun_wanandroid/model/user.dart';
+import 'package:fun_wanandroid/service/wan_android_repository.dart';
+import 'package:fun_wanandroid/store/c_form_field.dart';
 import 'package:mobx/mobx.dart';
 import 'package:validators/validators.dart';
 
 part 'signup_store.g.dart';
 
+class SignUpField {
+  static final String username = 'username';
+  static final String password = 'password';
+  static final String repassword = 'repassword';
+}
+
 class SignUpStore = _SignUpStore with _$SignUpStore;
 
-abstract class _SignUpStore with Store {
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+abstract class _SignUpStore with Store, SignUpField {
+  /// 挂在一个根节点方便获取context  用来做国际化
+  GlobalKey<dynamic> gKey = GlobalKey();
 
-  get context => formKey.currentContext;
+  get context => gKey.currentContext;
 
   @observable
   bool autovalidate = false;
 
-  static final String username = 'username';
-  static final String password = 'password';
-  static final String repassword = 'repassword';
+  @observable
+  ObservableFuture<User> signUpFuture;
+
+  @action
+  Future<User> signup(
+      {@required String username,
+      @required String password,
+      @required String repassword}) async {
+    return signUpFuture = ObservableFuture(
+        WanAndroidRepository.register(username, password, repassword));
+  }
 
   @observable
-  ObservableMap<String, FormField> map = ObservableMap.of(<String, FormField>{
-    username: FormField(),
-    password: FormField(),
-    repassword: FormField()
-  });
+  ObservableList<CFormField> list;
 
   List<ReactionDisposer> _disposers;
   _SignUpStore() {
-    // _disposers = [
-    //   reaction((_) => map[username].value, validUsername),
-    //   reaction((_) => map[password].value, validPassword),
-    //   reaction((_) => map[repassword].value, validRepassword),
-    // ];
+    _setup();
+  }
+
+  void _setup() {
+    list = ObservableList.of([
+      CFormField(
+          prefixIconData: Icons.perm_identity,
+          name: SignUpField.username,
+          validFunction: validUsername,
+          hintText: (context) => I18n.of(context).userName),
+      CFormField(
+          obscureText: true,
+          prefixIconData: Icons.lock,
+          name: SignUpField.password,
+          validFunction: validPassword,
+          hintText: (context) => I18n.of(context).password),
+      CFormField(
+          obscureText: true,
+          prefixIconData: Icons.lock,
+          name: SignUpField.repassword,
+          validFunction: validRepassword,
+          hintText: (context) => I18n.of(context).rePassword),
+    ]);
   }
 
   @override
@@ -44,67 +76,52 @@ abstract class _SignUpStore with Store {
   @action
   Future validUsername(String val) async {
     if (isNull(val) || val.isEmpty) {
-      map[username].error = I18n.of(context).fieldNotNull;
-      return;
+      return I18n.of(context).fieldNotNull;
     }
-    map[username].error = null;
+    return null;
   }
 
   @action
   Future validPassword(String val) async {
     if (isNull(val) || val.isEmpty) {
-      map[password].error = I18n.of(context).fieldNotNull;
-      return;
+      return I18n.of(context).fieldNotNull;
     }
-    map[password].error = null;
+    return null;
   }
 
   @action
-  Future validRepassword(String val) async {
+  Future<String> validRepassword(String val) async {
     if (isNull(val) || val.isEmpty) {
-      map[repassword].error = I18n.of(context).fieldNotNull;
-      return;
+      return I18n.of(context).fieldNotNull;
     }
-    // Future.value(123).
-    if (map[password] != map[repassword]) {
-      map[repassword].error = I18n.of(context).twoPwdDifferent;
-      return;
+    String password =
+        list.firstWhere((e) => e.name == SignUpField.password).value;
+    if (val != password) {
+      return I18n.of(context).twoPwdDifferent;
     }
-    map[repassword].error = null;
+    return null;
   }
 
   @action
-  void Function() submit(Function(String username, String password) call) {
+  void Function() submit(Function(Map<String, dynamic>) call) {
     return () async {
       if (!autovalidate) {
         autovalidate = !autovalidate;
-        _disposers = [
-          reaction((_) => map[username].value, validUsername),
-          reaction((_) => map[password].value, validPassword),
-          reaction((_) => map[repassword].value, validRepassword),
-        ];
+
+        _disposers =
+            list.map((e) => reaction((_) => e.value, e.validFunc)).toList();
       }
-      await validUsername(map[username].value);
-      await validPassword(map[password].value);
-      await validRepassword(map[repassword].value);
-      bool valid = map.entries.every((e) => e.value.valid);
+
+      await Future.wait(
+          List.generate(list.length, (i) => list[i].validFunc(list[i].value)));
+
+      bool valid = list.every((e) => e.valid);
       if (!valid) {
-        map.entries.forEach((e) => print('${e.key}:${e.value.value}'));
         return;
       }
-
-      call(username, password);
+      Map<String, dynamic> map =
+          Map.fromIterable(list, key: (e) => e.name, value: (e) => e.value);
+      call(map);
     };
   }
-}
-
-class FormField = _FormField with _$FormField;
-
-abstract class _FormField with Store {
-  @observable
-  String value;
-  @observable
-  String error;
-  @computed
-  bool get valid => isNull(error) || error.isEmpty;
 }

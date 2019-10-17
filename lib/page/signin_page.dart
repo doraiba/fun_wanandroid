@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:fun_wanandroid/generated/i18n.dart';
 import 'package:fun_wanandroid/helper/dio_helper.dart';
 import 'package:fun_wanandroid/helper/image_helper.dart';
+import 'package:fun_wanandroid/helper/widget_helper.dart';
 import 'package:fun_wanandroid/model/user.dart';
 import 'package:fun_wanandroid/route/routes.dart';
 import 'package:fun_wanandroid/store/signin_store.dart';
@@ -21,25 +24,26 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   SignInStore store = SignInStore();
 
-  Widget get loading => RaisedButton(
-        onPressed: null,
-        disabledColor: Theme.of(context).accentColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-        child: SizedBox(
-          height: 24,
-          width: 24,
-          child: CircularProgressIndicator(
-            strokeWidth: 1.5,
-            valueColor: AlwaysStoppedAnimation(Colors.white60),
-          ),
-        ),
-      );
+  var _usernameController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _usernameController.text =
+        Provider.of<UserStore>(context, listen: false).lastLoginName;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _usernameController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).accentColor.withOpacity(.7),
       body: Container(
+        color: Theme.of(context).accentColor.withOpacity(.7),
         child: ListView(
           // physics: BouncingScrollPhysics(),
           children: <Widget>[
@@ -55,8 +59,12 @@ class _SignInPageState extends State<SignInPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 FlatButton(
-                  onPressed: () {
-                    Routes.router.navigateTo(context, Routes.register);
+                  onPressed: () async {
+                    final nickname = await Routes.router
+                        .navigateTo(context, Routes.register);
+                    if (nickname != null) {
+                      _usernameController.text = nickname;
+                    }
                   },
                   child: Text(
                     I18n.of(context).signUp,
@@ -96,22 +104,21 @@ class _SignInPageState extends State<SignInPage> {
                       children: <Widget>[
                         SizedBox(height: 90),
                         Container(
-                          child: Consumer<UserStore>(
-                            builder: (_, userStore, __) => TextFormField(
-                              initialValue: userStore.lastLoginName,
-                              decoration: InputDecoration(
-                                hintText: I18n.of(context).userName,
-                                hintStyle: TextStyle(
-                                    color: Theme.of(context).buttonColor),
-                                // border: InputBorder.none,
-                                prefixIcon: Icon(
-                                  Icons.perm_identity,
-                                  color: Theme.of(context).buttonColor,
-                                ),
+                          child: TextFormField(
+                            controller: _usernameController,
+                            decoration: InputDecoration(
+                              // labelText: userStore.lastLoginName,
+                              hintText: I18n.of(context).userName,
+                              hintStyle: TextStyle(
+                                  color: Theme.of(context).buttonColor),
+                              // border: InputBorder.none,
+                              prefixIcon: Icon(
+                                Icons.perm_identity,
+                                color: Theme.of(context).buttonColor,
                               ),
-                              onSaved: (val) => store.username = val,
-                              validator: store.validUserName,
                             ),
+                            onSaved: (val) => store.username = val,
+                            validator: store.validUserName,
                           ),
                         ),
                         Container(padding: EdgeInsets.only(bottom: 10)),
@@ -152,7 +159,11 @@ class _SignInPageState extends State<SignInPage> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             FlatButton(
-                              onPressed: null,
+                              onPressed: () {
+                                Provider.of<UserStore>(context, listen: false)
+                                    .setLastLoginName(
+                                        'name${Random().nextInt(6)}');
+                              },
                               child: Text(I18n.of(context).forgot),
                             )
                           ],
@@ -182,7 +193,7 @@ class _SignInPageState extends State<SignInPage> {
                         builder: (_) {
                           var future = store.signFuture;
                           if (future?.status == FutureStatus.pending) {
-                            return loading;
+                            return RaiseButtonLading();
                           }
                           return RaisedButton(
                             onPressed: store.submit((username, password) async {

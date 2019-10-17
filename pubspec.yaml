@@ -50,6 +50,7 @@ dependencies:
   flare_flutter:
   flutter_custom_clippers:
   validators:
+  oktoast:
 
 dev_dependencies:
   flutter_test:
