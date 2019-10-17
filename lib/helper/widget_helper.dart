@@ -221,10 +221,7 @@ class ThemeTile extends StatelessWidget {
       leading:
           leading ?? Icon(Icons.palette, color: iconColorSupplier(context)),
       title: title ?? Text(I18n.of(context).theme),
-      trailing: trailing ??
-          Icon(
-            Icons.keyboard_arrow_down,
-          ),
+      trailing: trailing,
       children: <Widget>[
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
