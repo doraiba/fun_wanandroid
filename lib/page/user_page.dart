@@ -42,115 +42,126 @@ class _UserPageState extends State<UserPage>
 class UserAccountHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 50.0),
-      height: 240.0,
-      child: Stack(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(
-                top: 40.0, left: 40.0, right: 40.0, bottom: 10.0),
-            child: Material(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              elevation: 5.0,
-              color: themeSupplier(context,
-                  truth: Theme.of(context).accentColor, fal: Colors.white),
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 50.0,
-                  ),
-                  Consumer<UserStore>(
-                    builder: (_, userStore, __) => Text(
+    return Consumer2<UserStore, UserInfoStore>(
+      builder: (_, userStore, userInfoStore, __) => Container(
+        margin: EdgeInsets.only(top: 50.0),
+        height: 240.0,
+        child: Stack(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(
+                  top: 40.0, left: 40.0, right: 40.0, bottom: 10.0),
+              child: Material(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                elevation: 5.0,
+                color: themeSupplier(context,
+                    truth: Theme.of(context).accentColor, fal: Colors.white),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 50.0,
+                    ),
+                    Text(
                       userStore.auth.nickname,
                       style: Theme.of(context).textTheme.title,
                     ),
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  Consumer<UserInfoStore>(
-                    builder: (_, store, __) {
-                      return FutureObserver(
-                          supplier: () => store.coinStore.coinFuture,
-                          loading: CupertinoActivityIndicator(),
-                          rejected: Text(I18n.of(context).operatorError),
-                          builder: (_, data, ___) {
-                            return Text(
-                              "${I18n.of(context).coin}: $data",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline),
-                            );
-                          });
-                    },
-                  ),
-                  SizedBox(
-                    height: 13.0,
-                  ),
-                  Container(
-                    height: 40.0,
-                    child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child: ListTile(
-                            title: ,
-                            subtitle: Text(
-                                I18n.of(context).tabProject.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 12.0)),
-                          ),
-                        ),
-                        Expanded(
-                          child: ListTile(
-                            title: Text(
-                              "10.3K",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Text(I18n.of(context).share.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 12.0)),
-                          ),
-                        ),
-                        Expanded(
-                          child: ListTile(
-                            title: Text(
-                              "120",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Text(
-                                I18n.of(context).favourites.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 12.0)),
-                          ),
-                        ),
-                      ],
+                    SizedBox(
+                      height: 8.0,
                     ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Material(
-                elevation: 5.0,
-                shape: CircleBorder(),
-                child: CircleAvatar(
-                  radius: 40.0,
-                  backgroundImage: AssetImage(
-                    ImageHelper.wrapAssets("user_avatar.png"),
-                  ),
+                    FutureObserver<int>(
+                        supplier: () => userInfoStore.coinStore.coinFuture,
+                        loading: CupertinoActivityIndicator(),
+                        rejected: Text(I18n.of(context).operatorError),
+                        builder: (_, data, ___) {
+                          return Text(
+                            "${I18n.of(context).coin}: $data",
+                            textAlign: TextAlign.start,
+                            style:
+                                TextStyle(decoration: TextDecoration.underline),
+                          );
+                        }),
+                    SizedBox(
+                      height: 13.0,
+                    ),
+                    Container(
+                      height: 40.0,
+                      child: Row(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          // Expanded(
+                          //   child: ListTile(
+                          //     title: FutureObserver(
+                          //       supplier: () => userInfoStore.articleStore,
+                          //     ),
+                          //     subtitle: Text(
+                          //         I18n.of(context).tabProject.toUpperCase(),
+                          //         textAlign: TextAlign.center,
+                          //         style: TextStyle(fontSize: 12.0)),
+                          //   ),
+                          // ),
+                          Expanded(
+                            child: ListTile(
+                              title: FutureObserver<int>(
+                                loading: CupertinoActivityIndicator(),
+                                rejected: Text(I18n.of(context).operatorError),
+                                supplier: () =>
+                                    userInfoStore.articleStore.shareFuture,
+                                builder: (_, data, __) => Text(
+                                  "$data",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              subtitle: Text(
+                                  I18n.of(context).share.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 12.0)),
+                            ),
+                          ),
+                          Expanded(
+                            child: ListTile(
+                              title: FutureObserver<int>(
+                                loading: CupertinoActivityIndicator(),
+                                rejected: Text(I18n.of(context).operatorError),
+                                supplier: () =>
+                                    userInfoStore.articleStore.collectFuture,
+                                builder: (_, data, __) => Text(
+                                  "$data",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              subtitle: Text(
+                                  I18n.of(context).favourites.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 12.0)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
               ),
-            ],
-          ),
-        ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Material(
+                  elevation: 5.0,
+                  shape: CircleBorder(),
+                  child: CircleAvatar(
+                    radius: 40.0,
+                    backgroundImage: AssetImage(
+                      ImageHelper.wrapAssets("user_avatar.png"),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -225,6 +236,12 @@ class _AuthUserPageState extends State<AuthUserPage> {
   var _controller = RefreshController();
 
   @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -239,17 +256,18 @@ class _AuthUserPageState extends State<AuthUserPage> {
               ),
             ),
           ),
-          SmartRefresher(
-            header: MaterialClassicHeader(),
-            onRefresh: () {
-              Future.delayed(Duration(seconds: 2)).then((_) {
+          Consumer<UserInfoStore>(
+            builder: (_, store, __) => SmartRefresher(
+              header: MaterialClassicHeader(),
+              onRefresh: () async {
+                await store.refresh();
                 _controller.refreshCompleted();
-              });
-            },
-            controller: _controller,
-            child: ListView.builder(
-              itemCount: 2,
-              itemBuilder: _itemBuilder,
+              },
+              controller: _controller,
+              child: ListView.builder(
+                itemCount: 2,
+                itemBuilder: _itemBuilder,
+              ),
             ),
           ),
           SafeArea(

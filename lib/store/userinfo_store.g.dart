@@ -67,14 +67,14 @@ mixin _$ArticleStore on _ArticleStore, Store {
   final _$websiteFutureAtom = Atom(name: '_ArticleStore.websiteFuture');
 
   @override
-  ObservableFuture get websiteFuture {
+  ObservableFuture<int> get websiteFuture {
     _$websiteFutureAtom.context.enforceReadPolicy(_$websiteFutureAtom);
     _$websiteFutureAtom.reportObserved();
     return super.websiteFuture;
   }
 
   @override
-  set websiteFuture(ObservableFuture value) {
+  set websiteFuture(ObservableFuture<int> value) {
     _$websiteFutureAtom.context.conditionallyRunInAction(() {
       super.websiteFuture = value;
       _$websiteFutureAtom.reportChanged();

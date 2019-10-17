@@ -11,6 +11,7 @@ abstract class _UserInfoStore with Store {
 
   Future<void> refresh() async {
     await coinStore.refresh();
+    await articleStore.refresh();
   }
 }
 
@@ -51,7 +52,7 @@ abstract class _ArticleStore with Store {
   @action
   Future<int> fetchShare() async {
     final _future = ObservableFuture(
-        WanAndroidRepository.fetchShare(1).then((map) => map['total']));
+        WanAndroidRepository.fetchShare(1).then<int>((map) => map['total']));
     return shareFuture = _future;
   }
 
@@ -60,12 +61,12 @@ abstract class _ArticleStore with Store {
   @action
   Future<int> fetchCollect() async {
     final _future = ObservableFuture(
-        WanAndroidRepository.fetchCollect(1).then((map) => map['total']));
+        WanAndroidRepository.fetchCollect(1).then<int>((map) => map['total']));
     return collectFuture = _future;
   }
 
   @observable
-  ObservableFuture websiteFuture;
+  ObservableFuture<int> websiteFuture;
   @action
   Future<int> fetchWebsite() async {
     final _future =

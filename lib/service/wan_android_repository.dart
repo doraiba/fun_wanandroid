@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:fun_wanandroid/model/article.dart';
 import 'package:fun_wanandroid/model/banner.dart';
