@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fun_wanandroid/generated/i18n.dart';
 import 'package:fun_wanandroid/helper/widget_helper.dart';
+import 'package:fun_wanandroid/page/chaos_page.dart';
 import 'package:fun_wanandroid/page/home_page.dart';
 import 'package:fun_wanandroid/page/user_page.dart';
 import 'package:fun_wanandroid/page/project_page.dart';
@@ -22,7 +23,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
     HomePage(),
     ProjectPage(),
     WechatPage(),
-    Container(),
+    ChaosPage(),
     UserPage(),
   ];
 

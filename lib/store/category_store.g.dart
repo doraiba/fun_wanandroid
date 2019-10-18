@@ -43,6 +43,40 @@ mixin _$CategorytStore on _CategorytStore, Store {
     }, _$wechatFutureAtom, name: '${_$wechatFutureAtom.name}_set');
   }
 
+  final _$structureFutureAtom = Atom(name: '_CategorytStore.structureFuture');
+
+  @override
+  ObservableFuture<List<Tree>> get structureFuture {
+    _$structureFutureAtom.context.enforceReadPolicy(_$structureFutureAtom);
+    _$structureFutureAtom.reportObserved();
+    return super.structureFuture;
+  }
+
+  @override
+  set structureFuture(ObservableFuture<List<Tree>> value) {
+    _$structureFutureAtom.context.conditionallyRunInAction(() {
+      super.structureFuture = value;
+      _$structureFutureAtom.reportChanged();
+    }, _$structureFutureAtom, name: '${_$structureFutureAtom.name}_set');
+  }
+
+  final _$navigtorFutureAtom = Atom(name: '_CategorytStore.navigtorFuture');
+
+  @override
+  ObservableFuture<List<NavigationSite>> get navigtorFuture {
+    _$navigtorFutureAtom.context.enforceReadPolicy(_$navigtorFutureAtom);
+    _$navigtorFutureAtom.reportObserved();
+    return super.navigtorFuture;
+  }
+
+  @override
+  set navigtorFuture(ObservableFuture<List<NavigationSite>> value) {
+    _$navigtorFutureAtom.context.conditionallyRunInAction(() {
+      super.navigtorFuture = value;
+      _$navigtorFutureAtom.reportChanged();
+    }, _$navigtorFutureAtom, name: '${_$navigtorFutureAtom.name}_set');
+  }
+
   final _$_CategorytStoreActionController =
       ActionController(name: '_CategorytStore');
 
@@ -61,6 +95,26 @@ mixin _$CategorytStore on _CategorytStore, Store {
     final _$actionInfo = _$_CategorytStoreActionController.startAction();
     try {
       return super.fetchWecahtLatest();
+    } finally {
+      _$_CategorytStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future fetchStructureLatest() {
+    final _$actionInfo = _$_CategorytStoreActionController.startAction();
+    try {
+      return super.fetchStructureLatest();
+    } finally {
+      _$_CategorytStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future fetchNavigtorLatest() {
+    final _$actionInfo = _$_CategorytStoreActionController.startAction();
+    try {
+      return super.fetchNavigtorLatest();
     } finally {
       _$_CategorytStoreActionController.endAction(_$actionInfo);
     }

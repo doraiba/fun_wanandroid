@@ -1,3 +1,4 @@
+import 'package:fun_wanandroid/model/navigation_site.dart';
 import 'package:fun_wanandroid/model/tree.dart';
 import 'package:fun_wanandroid/service/wan_android_repository.dart';
 import 'package:mobx/mobx.dart';
@@ -30,8 +31,28 @@ abstract class _CategorytStore with Store {
 
   ///==============================wechat=================
 
+  ///==============================体系=================
+  @observable
+  ObservableFuture<List<Tree>> structureFuture;
+  @action
+  Future fetchStructureLatest() => structureFuture =
+      ObservableFuture(WanAndroidRepository.fetchTreeCategories());
+
+  ///==============================体系=================
+
+  ///==============================导航=================
+  @observable
+  ObservableFuture<List<NavigationSite>> navigtorFuture;
+  @action
+  Future fetchNavigtorLatest() => navigtorFuture =
+      ObservableFuture(WanAndroidRepository.fetchNavigationSite());
+
+  ///==============================导航=================
+
   void _setup() {
     this.fetchLatest();
     this.fetchWecahtLatest();
+    this.fetchStructureLatest();
+    this.fetchNavigtorLatest();
   }
 }

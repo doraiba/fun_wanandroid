@@ -23,11 +23,12 @@ class _WechatPageState extends State<WechatPage>
         return FutureObserver<List<Tree>>(
             supplier: () => store.wechatFuture,
             refresh: () async => store.fetchLatest(),
-            builder: (c, data, _) {
+            builder: (_, data, __) {
               return DefaultTabController(
                 length: data.length,
                 child: Scaffold(
                   appBar: AppBar(
+                    elevation: 0,
                     title: Stack(
                       children: <Widget>[
                         NavigatorBuilder(

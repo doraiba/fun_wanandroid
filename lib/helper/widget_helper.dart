@@ -129,7 +129,7 @@ class NavigatorBuilder<T> extends StatelessWidget {
       {@required this.data,
       @required this.builder,
       this.decoration,
-      this.margin = const EdgeInsets.only(right: 20)});
+      this.margin});
   @override
   Widget build(BuildContext context) {
     return Container(

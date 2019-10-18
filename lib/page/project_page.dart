@@ -23,11 +23,12 @@ class _ProjectPageState extends State<ProjectPage>
         return FutureObserver<List<Tree>>(
             supplier: () => store.treesFuture,
             refresh: () async => store.fetchLatest(),
-            builder: (c, data, _) {
+            builder: (_, data, __) {
               return DefaultTabController(
                 length: data.length,
                 child: Scaffold(
                   appBar: AppBar(
+                    elevation: 0,
                     title: Stack(
                       children: <Widget>[
                         NavigatorBuilder(
