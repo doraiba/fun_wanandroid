@@ -57,7 +57,7 @@ abstract class _PageStore<T> with Store {
 
   @action
   void retry() {
-    this.fetchFutrue = emptyFutrue;
+    this.fetchFutrue = null;
     refresh();
   }
 
