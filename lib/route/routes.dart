@@ -12,11 +12,15 @@ class Routes {
 
   static final String register = '/register';
 
+  static final String chaosNav = '/chaos/:id/:cid';
+
   static void configureRoutes() {
     router.notFoundHandler = Handler(
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return Center(
-        child: Text('NOT FOUND'),
+      return Scaffold(
+        body: Center(
+          child: Text('NOT FOUND'),
+        ),
       );
     });
 
@@ -27,5 +31,6 @@ class Routes {
     router.define(setting, handler: settingHandler);
     router.define(login, handler: signInHandler);
     router.define(register, handler: signUpHandler);
+    router.define(chaosNav, handler: chaosNavHandler);
   }
 }

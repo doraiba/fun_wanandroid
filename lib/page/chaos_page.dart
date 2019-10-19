@@ -1,8 +1,10 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:fun_wanandroid/helper/widget_helper.dart';
 import 'package:fun_wanandroid/model/article.dart';
 import 'package:fun_wanandroid/model/navigation_site.dart';
 import 'package:fun_wanandroid/model/tree.dart';
+import 'package:fun_wanandroid/route/routes.dart';
 import 'package:fun_wanandroid/store/category_store.dart';
 import 'package:provider/provider.dart';
 
@@ -47,7 +49,15 @@ class _ChaosPageState extends State<ChaosPage>
                     return List.generate(
                         _list.length,
                         (i) => ActionChip(
-                              onPressed: () {},
+                              onPressed: () {
+                                Routes.router.navigateTo(
+                                    context,
+                                    Routes.chaosNav
+                                        .replaceFirst(':id', e.id.toString())
+                                        .replaceFirst(
+                                            ':cid', _list[i].id.toString()),
+                                    transition: TransitionType.cupertino);
+                              },
                               label: Text(_list[i].name),
                             ));
                   },
@@ -115,7 +125,7 @@ class ChaosBody<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       children: List.generate(
         list.length,
         (i) {

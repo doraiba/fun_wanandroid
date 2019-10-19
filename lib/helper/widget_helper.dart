@@ -172,7 +172,7 @@ class OnlyTips extends StatelessWidget {
           Padding(
             padding: EdgeInsets.fromLTRB(30, 20, 30, 150),
             child: Text(
-              tips ?? I18n.of(context).operatorError,
+              tips ?? I18n.of(context).retry,
               style: Theme.of(context)
                   .textTheme
                   .body1

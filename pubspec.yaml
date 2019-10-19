@@ -51,6 +51,7 @@ dependencies:
   flutter_custom_clippers:
   validators:
   oktoast:
+  event_bus:
 
 dev_dependencies:
   flutter_test:

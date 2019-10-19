@@ -77,6 +77,14 @@ mixin _$CategorytStore on _CategorytStore, Store {
     }, _$navigtorFutureAtom, name: '${_$navigtorFutureAtom.name}_set');
   }
 
+  final _$fetchStructureLatestAsyncAction = AsyncAction('fetchStructureLatest');
+
+  @override
+  Future fetchStructureLatest() {
+    return _$fetchStructureLatestAsyncAction
+        .run(() => super.fetchStructureLatest());
+  }
+
   final _$_CategorytStoreActionController =
       ActionController(name: '_CategorytStore');
 
@@ -95,16 +103,6 @@ mixin _$CategorytStore on _CategorytStore, Store {
     final _$actionInfo = _$_CategorytStoreActionController.startAction();
     try {
       return super.fetchWecahtLatest();
-    } finally {
-      _$_CategorytStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  Future fetchStructureLatest() {
-    final _$actionInfo = _$_CategorytStoreActionController.startAction();
-    try {
-      return super.fetchStructureLatest();
     } finally {
       _$_CategorytStoreActionController.endAction(_$actionInfo);
     }

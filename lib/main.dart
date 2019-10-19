@@ -5,6 +5,7 @@ import 'package:fun_wanandroid/generated/i18n.dart';
 import 'package:fun_wanandroid/init/initializer.dart';
 import 'package:fun_wanandroid/route/routes.dart';
 import 'package:fun_wanandroid/store/category_store.dart';
+import 'package:fun_wanandroid/store/home_store.dart';
 import 'package:fun_wanandroid/store/preferences_service.dart';
 import 'package:fun_wanandroid/store/settings_store.dart';
 import 'package:fun_wanandroid/store/user_store.dart';
@@ -20,20 +21,17 @@ class MyApp extends StatelessWidget {
     return OKToast(
       child: MultiProvider(
         providers: [
+          Provider<HomeStore>(builder: (_) => HomeStore()),
           Provider<PreferencesService>(
-            builder: (_) =>
-                PreferencesService(sharedPreferences: Application.prefs),
-          ),
+              builder: (_) =>
+                  PreferencesService(sharedPreferences: Application.prefs)),
           ProxyProvider<PreferencesService, SettingsStore>(
               builder: (_, preferencesService, __) =>
                   SettingsStore(preferencesService)),
-          Provider(
-            builder: (_) => CategorytStore(),
-          ),
+          Provider(builder: (_) => CategorytStore()),
           ProxyProvider<PreferencesService, UserStore>(
-            builder: (_, preferencesService, __) =>
-                UserStore(preferencesService),
-          )
+              builder: (_, preferencesService, __) =>
+                  UserStore(preferencesService))
         ],
         child: Consumer<SettingsStore>(
           builder: (_, settingsStore, __) => Observer(

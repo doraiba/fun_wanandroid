@@ -19,11 +19,8 @@ abstract class _PageStore<T> with Store {
 
   @observable
   ObservableList<T> list = ObservableList.of([]);
-
-  static ObservableFuture<Map<String, dynamic>> get emptyFutrue =>
-      ObservableFuture(Future.delayed(Duration(seconds: 10)));
   @observable
-  ObservableFuture<Map<String, dynamic>> fetchFutrue = emptyFutrue;
+  ObservableFuture<Map<String, dynamic>> fetchFutrue;
 
   /// 初始页数
   @observable
@@ -80,9 +77,7 @@ abstract class _PageStore<T> with Store {
   /// 基础模板
   @action
   Future<List<T>> loadtemplate({int page = _PageStore.initialPage}) async {
-    // fetchFutrue = emptyFutrue;
     final _fetchFutrue = ObservableFuture(load(page: page));
-    debugPrint("*** fetchFutrue.status : ${emptyFutrue.status} ***");
     final Map<String, dynamic> result = await _fetchFutrue;
     fetchFutrue = _fetchFutrue;
     // page = result['curPage'];
@@ -94,7 +89,6 @@ abstract class _PageStore<T> with Store {
       list.clear();
     }
     list..addAll(_list);
-    debugPrint('hasmore:$has,page:$page,pageCount:$pageCount');
 
     if (!has || page == _PageStore.initialPage) {
       if (page == _PageStore.initialPage) {

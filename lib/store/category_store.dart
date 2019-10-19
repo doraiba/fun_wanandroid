@@ -32,11 +32,15 @@ abstract class _CategorytStore with Store {
   ///==============================wechat=================
 
   ///==============================体系=================
+  List<Tree> structureList;
   @observable
   ObservableFuture<List<Tree>> structureFuture;
   @action
-  Future fetchStructureLatest() => structureFuture =
-      ObservableFuture(WanAndroidRepository.fetchTreeCategories());
+  Future fetchStructureLatest() async {
+    structureFuture =
+        ObservableFuture(WanAndroidRepository.fetchTreeCategories());
+    return structureList = await structureFuture;
+  }
 
   ///==============================体系=================
 
