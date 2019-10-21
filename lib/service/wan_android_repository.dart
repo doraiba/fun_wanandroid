@@ -1,6 +1,5 @@
-
 import 'package:fun_wanandroid/model/article.dart';
-import 'package:fun_wanandroid/model/banner.dart';
+import 'package:fun_wanandroid/model/nav_banner.dart';
 import 'package:fun_wanandroid/model/coin_record.dart';
 import 'package:fun_wanandroid/model/navigation_site.dart';
 import 'package:fun_wanandroid/model/search.dart';
@@ -11,10 +10,10 @@ import 'package:fun_wanandroid/model/web_site.dart';
 
 class WanAndroidRepository {
   // 轮播
-  static Future fetchBanners() async {
+  static Future<List<NavBanner>> fetchBanners() async {
     var response = await dio.get('banner/json');
     return response.data
-        .map<Banner>((item) => Banner.fromJsonMap(item))
+        .map<NavBanner>((item) => NavBanner.fromJsonMap(item))
         .toList();
   }
 

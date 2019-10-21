@@ -6,9 +6,8 @@ part 'abs_page_store.g.dart';
 abstract class PageStore<T> = _PageStore<T> with _$PageStore<T>;
 
 abstract class _PageStore<T> with Store {
-  static const int initialPage = 0;
-
-  _PageStore() {
+  final int initialPage;
+  _PageStore({this.initialPage: 0}) : page = initialPage {
     _setup();
   }
 
@@ -23,7 +22,7 @@ abstract class _PageStore<T> with Store {
 
   /// 初始页数
   @observable
-  int page = initialPage;
+  int page;
 
   /// 默认请求数量 无用
   @observable
@@ -75,29 +74,31 @@ abstract class _PageStore<T> with Store {
 
   /// 基础模板
   @action
-  Future<List<T>> loadtemplate({int page = _PageStore.initialPage}) async {
-    final _fetchFutrue = ObservableFuture(load(page: page));
-    final Map<String, dynamic> result = await _fetchFutrue;
-    fetchFutrue = _fetchFutrue;
-    // page = result['curPage'];
-    pageSize = result['size'];
-    total = result['total'];
+  Future<List<T>> loadtemplate({int page}) async {
+    try {
+      final _fetchFutrue = ObservableFuture(load(page: page));
+      final Map<String, dynamic> result = await _fetchFutrue;
+      fetchFutrue = _fetchFutrue;
+      // page = result['curPage'];
+      pageSize = result['size'];
+      total = result['total'];
 
-    final _list = result['datas'].map<T>(map).toList();
-    if (page == _PageStore.initialPage) {
-      list.clear();
-    }
-    list..addAll(_list);
-
-    if (!has || page == _PageStore.initialPage) {
-      if (page == _PageStore.initialPage) {
-        refreshController.refreshCompleted();
+      final _list = result['datas'].map<T>(map).toList();
+      if (page == this.initialPage) {
+        list.clear();
       }
-      if (!has) {
-        refreshController.loadNoData();
+      list..addAll(_list);
+    } finally {
+      if (!has || page == this.initialPage) {
+        if (page == this.initialPage) {
+          refreshController.refreshCompleted();
+        }
+        if (!has) {
+          refreshController.loadNoData();
+        }
+      } else {
+        refreshController.loadComplete();
       }
-    } else {
-      refreshController.loadComplete();
     }
 
     return list;

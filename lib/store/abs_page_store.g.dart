@@ -107,7 +107,7 @@ mixin _$PageStore<T> on _PageStore<T>, Store {
   final _$loadtemplateAsyncAction = AsyncAction('loadtemplate');
 
   @override
-  Future<List<T>> loadtemplate({int page = _PageStore.initialPage}) {
+  Future<List<T>> loadtemplate({int page}) {
     return _$loadtemplateAsyncAction.run(() => super.loadtemplate(page: page));
   }
 

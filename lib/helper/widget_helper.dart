@@ -399,3 +399,31 @@ class RaiseButtonLading extends StatelessWidget {
     );
   }
 }
+
+class ChildSwitcher extends StatelessWidget {
+  final bool display;
+  final bool animate;
+  final Widget child;
+  const ChildSwitcher(
+      {Key key, this.display: false, this.animate: true, this.child})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _child = display ? child : Container();
+    return _dec(_child);
+  }
+
+  _dec(Widget child) {
+    return animate
+        ? AnimatedSwitcher(
+            child: child,
+            duration: Duration(milliseconds: 300),
+            transitionBuilder: (child, animation) => ScaleTransition(
+              child: child,
+              scale: animation,
+            ),
+          )
+        : child;
+  }
+}

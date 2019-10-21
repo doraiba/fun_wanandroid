@@ -1,4 +1,4 @@
-class Banner {
+class NavBanner {
   String desc;
   int id;
   String imagePath;
@@ -8,7 +8,7 @@ class Banner {
   int type;
   String url;
 
-  Banner.fromJsonMap(Map<String, dynamic> map)
+  NavBanner.fromJsonMap(Map<String, dynamic> map)
       : desc = map["desc"],
         id = map["id"],
         imagePath = map["imagePath"],
