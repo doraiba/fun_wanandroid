@@ -260,8 +260,11 @@ class _AuthUserPageState extends State<AuthUserPage> {
             builder: (_, store, __) => SmartRefresher(
               header: MaterialClassicHeader(),
               onRefresh: () async {
-                await store.refresh();
-                _controller.refreshCompleted();
+                try {
+                  await store.refresh();
+                } finally {
+                  _controller.refreshCompleted();
+                }
               },
               controller: _controller,
               child: ListView.builder(

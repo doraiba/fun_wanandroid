@@ -6,11 +6,14 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('flutter i18n'),
-      ),
-      body: Container(
-        child: Text("wait..."),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            actions: <Widget>[
+              Icon(Icons.list)
+            ],
+          )
+        ],
       ),
     );
   }

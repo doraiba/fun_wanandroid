@@ -40,6 +40,7 @@ class _ChaosPageState extends State<ChaosPage>
           builder: (_, store, __) => TabBarView(
             children: <Widget>[
               FutureObserver<List<Tree>>(
+                refresh: store.fetchStructureLatest,
                 supplier: () => store.structureFuture,
                 builder: (_, data, __) => ChaosBody<Tree>(
                   list: data,
@@ -64,6 +65,7 @@ class _ChaosPageState extends State<ChaosPage>
                 ),
               ),
               FutureObserver<List<NavigationSite>>(
+                refresh: store.fetchNavigtorLatest,
                 supplier: () => store.navigtorFuture,
                 builder: (_, data, __) => ChaosBody<NavigationSite>(
                   list: data,
