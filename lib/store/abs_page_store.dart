@@ -34,7 +34,7 @@ abstract class _PageStore<T> with Store {
 
   /// 页数 无用
   @computed
-  int get pageCount => (total / pageSize).ceil();
+  int get pageCount => (total / pageSize ?? 0).ceil();
   @computed
   bool get has => (page + 1) < pageCount;
 
@@ -75,36 +75,40 @@ abstract class _PageStore<T> with Store {
   /// 基础模板
   @action
   Future<List<T>> loadtemplate({int page}) async {
+    Map<String, dynamic> result;
     try {
-      final _fetchFutrue = ObservableFuture(load(page: page));
-      final Map<String, dynamic> result = await _fetchFutrue;
-      fetchFutrue = _fetchFutrue;
-      // page = result['curPage'];
-      pageSize = result['size'];
-      total = result['total'];
+      result = await load(page: page);
+    } catch (e) {
+      fetchFutrue = ObservableFuture.error(<String, dynamic>{});
+      return list;
+    }
 
-      final _list = result['datas'].map<T>(map).toList();
+    fetchFutrue = ObservableFuture.value(result);
+    // page = result['curPage'];
+    pageSize = result['size'];
+    total = result['total'];
+
+    final _list = result['datas'].map<T>(map).toList();
+    if (page == this.initialPage) {
+      list.clear();
+    }
+    list..addAll(_list);
+
+    if (!has || page == this.initialPage) {
       if (page == this.initialPage) {
-        list.clear();
+        refreshController.refreshCompleted();
       }
-      list..addAll(_list);
-    } finally {
-      if (!has || page == this.initialPage) {
-        if (page == this.initialPage) {
-          refreshController.refreshCompleted();
-        }
-        if (!has) {
-          refreshController.loadNoData();
-        }
-      } else {
-        refreshController.loadComplete();
+      if (!has) {
+        refreshController.loadNoData();
       }
+    } else {
+      refreshController.loadComplete();
     }
 
     return list;
   }
 
-  /// 泛型无法直接条用fromJson构造器,交由子类进行处理
+  /// 泛型无法直接条用fromJson构造器,交由子类进行处理??????
   T map(item);
 
   /// 调用具体方法获取数据

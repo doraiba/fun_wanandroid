@@ -26,6 +26,23 @@ mixin _$HomeStore on _HomeStore, Store {
     }, _$bannerFutureAtom, name: '${_$bannerFutureAtom.name}_set');
   }
 
+  final _$topFutureAtom = Atom(name: '_HomeStore.topFuture');
+
+  @override
+  ObservableFuture<List<Article>> get topFuture {
+    _$topFutureAtom.context.enforceReadPolicy(_$topFutureAtom);
+    _$topFutureAtom.reportObserved();
+    return super.topFuture;
+  }
+
+  @override
+  set topFuture(ObservableFuture<List<Article>> value) {
+    _$topFutureAtom.context.conditionallyRunInAction(() {
+      super.topFuture = value;
+      _$topFutureAtom.reportChanged();
+    }, _$topFutureAtom, name: '${_$topFutureAtom.name}_set');
+  }
+
   final _$fetchBannerAsyncAction = AsyncAction('fetchBanner');
 
   @override

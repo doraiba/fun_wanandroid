@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:fun_wanandroid/route/route_handlers.dart';
+import 'dart:convert';
 
 class Routes {
   static String root = '/';
@@ -13,6 +14,7 @@ class Routes {
   static final String register = '/register';
 
   static final String chaosNav = '/chaos/:id/:cid';
+  static final String webview = '/webview';
 
   static void configureRoutes() {
     router.notFoundHandler = Handler(
@@ -32,5 +34,22 @@ class Routes {
     router.define(login, handler: signInHandler);
     router.define(register, handler: signUpHandler);
     router.define(chaosNav, handler: chaosNavHandler);
+    router.define(webview, handler: webviewFlutterHandler);
+  }
+}
+
+class FluroConvertUtils {
+  /// fluro 传递中文参数前，先转换，fluro 不支持中文传递
+  static String fluroCnParamsEncode(String originalCn) {
+    return jsonEncode(Utf8Encoder().convert(originalCn));
+  }
+
+  /// fluro 传递后取出参数，解析
+  static String fluroCnParamsDecode(String encodeCn) {
+    var list = List<int>();
+    ///字符串解码
+    jsonDecode(encodeCn).forEach(list.add);
+    String value = Utf8Decoder().convert(list);
+    return value;
   }
 }

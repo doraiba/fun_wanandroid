@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:fun_wanandroid/helper/event_bus_helper.dart';
 import 'package:fun_wanandroid/model/article.dart';
 import 'package:fun_wanandroid/model/nav_banner.dart';
@@ -11,13 +10,19 @@ part 'home_store.g.dart';
 class HomeStore = _HomeStore with _$HomeStore;
 
 abstract class _HomeStore extends PageStore<Article> with Store {
-  _HomeStore() : super(initialPage: -1) {
+  _HomeStore() {
     _setup();
   }
 
   void _setup() async {
     // Future.doWhile(()=>)
-    Future.wait(<Future>[fetchBanner(), fetchTop()]).then((_) {
+    Future.wait(<Future>[
+      fetchBanner(),
+      fetchTop(),
+      Future.doWhile(() => Future.delayed(
+              Duration(milliseconds: 300), () => super.fetchFutrue == null))
+          .then((_) => super.fetchFutrue)
+    ]).then((_) {
       behaviorBus.fire(AppLoadEvent());
     });
   }
@@ -30,10 +35,13 @@ abstract class _HomeStore extends PageStore<Article> with Store {
     return bannerFuture = ObservableFuture(WanAndroidRepository.fetchBanners());
   }
 
+  @observable
+  ObservableFuture<List<Article>> topFuture;
+
   @action
   Future<List<Article>> fetchTop() async {
-    final _list = await WanAndroidRepository.fetchTopArticles();
-    return super.list..addAll(_list);
+    final _future = WanAndroidRepository.fetchTopArticles();
+    return topFuture = ObservableFuture.value(await _future);
   }
 
   @override

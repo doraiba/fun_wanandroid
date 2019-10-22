@@ -18,7 +18,7 @@ class WanAndroidRepository {
   }
 
   // 置顶文章
-  static Future fetchTopArticles() async {
+  static Future<List<Article>> fetchTopArticles() async {
     var response = await dio.get('article/top/json');
     return response.data.map<Article>((item) => Article.fromMap(item)).toList();
   }
@@ -172,6 +172,6 @@ class WanAndroidRepository {
   /// 获取个人项目
   static Future<List<WebSite>> fetchSite() async {
     var response = await dio.get('lg/collect/usertools/json');
-    return response.data.map((e) => WebSite.fromJson(e)).toList();
+    return response.data.map<WebSite>((e) => WebSite.fromJson(e)).toList();
   }
 }

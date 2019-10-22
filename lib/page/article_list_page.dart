@@ -1,3 +1,4 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:fun_wanandroid/component/skeleton_component.dart';
@@ -5,7 +6,9 @@ import 'package:fun_wanandroid/generated/i18n.dart';
 import 'package:fun_wanandroid/helper/image_helper.dart';
 import 'package:fun_wanandroid/helper/widget_helper.dart';
 import 'package:fun_wanandroid/model/article.dart';
+import 'package:fun_wanandroid/route/routes.dart';
 import 'package:fun_wanandroid/store/project_page_store.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -35,6 +38,7 @@ class _ArticleListPageState extends State<ArticleListPage>
               builder: (BuildContext context, int index) => SkeletonListItem(),
             ),
             supplier: () => store.fetchFutrue,
+            refresh: store.refresh,
             builder: (c, data, refresh) {
               var list = store.list;
               if (list.isEmpty) {
@@ -72,7 +76,9 @@ class _ArticleListPageState extends State<ArticleListPage>
 /// 文章列表item
 class ArticleListItem extends StatelessWidget {
   final Article article;
-  const ArticleListItem({Key key, @required this.article}) : super(key: key);
+  final Widget mark;
+  const ArticleListItem({Key key, @required this.article, this.mark})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +87,11 @@ class ArticleListItem extends StatelessWidget {
         Material(
           // color: Theme.of(context).accentColor.withAlpha(10),
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              Routes.router.navigateTo(context,
+                  '${Routes.webview}?url=${FluroConvertUtils.fluroCnParamsEncode(article.link)}&title=${FluroConvertUtils.fluroCnParamsEncode(article.title)}',
+                  transition: TransitionType.cupertino);
+            },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               padding: EdgeInsets.symmetric(vertical: 10),
@@ -158,6 +168,7 @@ class ArticleListItem extends StatelessWidget {
                     ),
                   Row(
                     children: <Widget>[
+                      mark ?? SizedBox.shrink(),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 5),
                         child: Text(
@@ -180,14 +191,10 @@ class ArticleListItem extends StatelessWidget {
           right: 0,
           child: Padding(
             padding: EdgeInsets.only(bottom: 10, right: 20),
-            child: Consumer<ProjectPageStore>(
-              builder: (_, pageStore, __) {
-                return GestureDetector(
-                  child: Icon(Icons.favorite),
-                  onTap: () {
-                    pageStore.refresh();
-                  },
-                );
+            child: GestureDetector(
+              child: Icon(Icons.favorite),
+              onTap: () {
+                showToast(article.id?.toString());
               },
             ),
           ),

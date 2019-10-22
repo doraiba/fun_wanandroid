@@ -7,10 +7,9 @@ import 'package:fun_wanandroid/helper/function_helper.dart';
 import 'package:fun_wanandroid/helper/image_helper.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 typedef WrapBuilder<T> = Widget Function(
-    BuildContext context, T data, VoidFutureCallBack refresh);
+    BuildContext context, T data, VoidCallback refresh);
 typedef FutureFunction<S, T> = ObservableFuture<T> Function(S store);
 typedef FutureSupplier<T> = ObservableFuture<T> Function();
 typedef Func<T> = Widget Function(T item);
@@ -46,7 +45,7 @@ class WillPopScopeWidget extends StatelessWidget {
 class ConsumerFutureObserver<S, T> extends StatelessWidget {
   final FutureFunction<S, T> supplier;
   final WrapBuilder<T> builder;
-  final VoidFutureCallBack refresh;
+  final VoidCallback refresh;
   final Widget loading;
   final Widget rejected;
   const ConsumerFutureObserver(
@@ -75,7 +74,7 @@ class ConsumerFutureObserver<S, T> extends StatelessWidget {
 class FutureObserver<T> extends StatelessWidget {
   final FutureSupplier supplier;
   final WrapBuilder<T> builder;
-  final VoidFutureCallBack refresh;
+  final VoidCallback refresh;
   final Widget loading;
   final Widget rejected;
   const FutureObserver(

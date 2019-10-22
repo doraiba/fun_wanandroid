@@ -35,7 +35,7 @@ dependencies:
   package_info:
   flutter_swiper:
   cached_network_image:
-  flutter_webview_plugin:
+  webview_flutter:
   intl:
   rxdart:
   pull_to_refresh:
