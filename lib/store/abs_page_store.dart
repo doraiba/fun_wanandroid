@@ -96,7 +96,7 @@ abstract class _PageStore<T> with Store {
 
     if (!has || page == this.initialPage) {
       if (page == this.initialPage) {
-        refreshController.refreshCompleted();
+        refreshController.refreshCompleted(resetFooterState: true);
       }
       if (!has) {
         refreshController.loadNoData();
