@@ -8,7 +8,7 @@ import 'package:fun_wanandroid/helper/widget_helper.dart';
 import 'package:fun_wanandroid/model/article.dart';
 import 'package:fun_wanandroid/route/routes.dart';
 import 'package:fun_wanandroid/store/project_page_store.dart';
-import 'package:oktoast/oktoast.dart';
+import 'package:fun_wanandroid/store/user_store.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -191,10 +191,17 @@ class ArticleListItem extends StatelessWidget {
           right: 0,
           child: Padding(
             padding: EdgeInsets.only(bottom: 10, right: 20),
-            child: GestureDetector(
-              child: Icon(Icons.favorite),
-              onTap: () {
-                showToast(article.id?.toString());
+            child: ConsumerObserver<UserStore>(
+              builder: (context, userStore, child) {
+                bool has = userStore.hasFav(article.id);
+                return GestureDetector(
+                  child: Icon(has
+                      ? Icons.favorite
+                      : Icons.favorite_border),
+                  onTap: () {
+                    has ? userStore.removeFav(article.id): userStore.like(article.id);
+                  },
+                );
               },
             ),
           ),
@@ -208,7 +215,7 @@ class ArticleListItem extends StatelessWidget {
       data: title,
       useRichText: false,
       padding: EdgeInsets.symmetric(vertical: 5),
-      defaultTextStyle: Theme.of(context).textTheme.subtitle,
+      defaultTextStyle: Theme.of(context).textTheme.subtitle2,
     );
   }
 }

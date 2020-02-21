@@ -174,7 +174,7 @@ class OnlyTips extends StatelessWidget {
               tips ?? I18n.of(context).retry,
               style: Theme.of(context)
                   .textTheme
-                  .body1
+                  .bodyText1
                   .copyWith(color: Colors.grey),
             ),
           ),

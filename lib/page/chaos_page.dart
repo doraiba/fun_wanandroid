@@ -104,7 +104,7 @@ class ChaosItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(title, style: Theme.of(context).textTheme.subhead),
+          Text(title, style: Theme.of(context).textTheme.subtitle1),
           Wrap(
             runSpacing: 5,
             spacing: 8,

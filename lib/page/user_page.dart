@@ -64,7 +64,7 @@ class UserAccountHeader extends StatelessWidget {
                     ),
                     Text(
                       userStore.auth.nickname,
-                      style: Theme.of(context).textTheme.title,
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                     SizedBox(
                       height: 8.0,

@@ -34,7 +34,7 @@ dependencies:
   url_launcher:
   package_info:
   flutter_swiper:
-  cached_network_image:
+  cached_network_image: 
   webview_flutter:
   intl:
   rxdart:

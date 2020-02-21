@@ -125,12 +125,12 @@ class WanAndroidRepository {
   }
 
   // 收藏
-  static collect(id) async {
+  static Future<void> collect(id) async {
     await dio.post('lg/collect/$id/json');
   }
 
   // 取消收藏
-  static unCollect(id) async {
+  static Future<void> unCollect(id) async {
     await dio.post('lg/uncollect_originId/$id/json');
   }
 

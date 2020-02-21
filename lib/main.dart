@@ -30,8 +30,10 @@ class MyApp extends StatelessWidget {
                   SettingsStore(preferencesService)),
           Provider(builder: (_) => CategorytStore()),
           ProxyProvider<PreferencesService, UserStore>(
-              builder: (_, preferencesService, __) =>
-                  UserStore(preferencesService))
+            builder: (_, preferencesService, __) =>
+                UserStore(preferencesService),
+            dispose: (_, store) => store.dispose(),
+          )
         ],
         child: Consumer<SettingsStore>(
           builder: (_, settingsStore, __) => Observer(

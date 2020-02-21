@@ -1,6 +1,8 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:fun_wanandroid/component/search_delegate.dart';
 import 'package:fun_wanandroid/component/skeleton_component.dart';
 import 'package:fun_wanandroid/generated/i18n.dart';
 import 'package:fun_wanandroid/helper/image_helper.dart';
@@ -8,11 +10,11 @@ import 'package:fun_wanandroid/helper/widget_helper.dart';
 import 'package:fun_wanandroid/model/article.dart';
 import 'package:fun_wanandroid/model/nav_banner.dart';
 import 'package:fun_wanandroid/page/article_list_page.dart';
+import 'package:fun_wanandroid/route/routes.dart';
 import 'package:fun_wanandroid/store/home_store.dart';
 import 'package:fun_wanandroid/store/scroll_store.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -28,8 +30,6 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     super.build(context);
     final expandedHeight = MediaQuery.of(context).size.width * .43;
-    final top = MediaQuery.of(context).padding.top;
-    print('-bar- ============================================= $top ');
     return Provider(
       builder: (_) => ScrollStore(
           scrollController: PrimaryScrollController.of(context),
@@ -59,9 +59,30 @@ class _HomePageState extends State<HomePage>
                     Observer(
                       builder: (_) => ChildSwitcher(
                         display: scrollStore.overHeaven,
-                        child: IconButton(
-                          icon: Icon(Icons.search),
-                          onPressed: () {},
+                        child: Theme(
+                          data: Theme.of(context).copyWith(
+                              primaryColor: Colors.blue,
+                              appBarTheme: AppBarTheme(
+                                color: Colors.red
+                              ),
+                              inputDecorationTheme: InputDecorationTheme(
+                                fillColor: Colors.blue,
+                                focusColor: Colors.red,
+                                hoverColor:Colors.green,
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(40)))),
+                          child: Builder(
+                            builder: (_) => IconButton(
+                              icon: Icon(Icons.search),
+                              onPressed: () {
+                                showSearch(
+                                  context: _,
+                                  delegate: CustomSearchHintDelegate(),
+                                );
+                              },
+                            ),
+                          ),
                         ),
                       ),
                     )
@@ -151,23 +172,10 @@ class NavBannerHeader extends StatelessWidget {
         itemCount: itemList.length,
         itemBuilder: (_, i) => GestureDetector(
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => Scaffold(
-                          // clearCookies: false,
-                          appBar: AppBar(
-                            title: Text(
-                              itemList[i].title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          body: WebView(
-                            initialUrl: itemList[i].url,
-                            javascriptMode: JavascriptMode.unrestricted,
-                          ),
-                        )));
+            NavBanner navBanner = itemList[i];
+            Routes.router.navigateTo(context,
+                '${Routes.webview}?url=${FluroConvertUtils.fluroCnParamsEncode(navBanner.url)}&title=${FluroConvertUtils.fluroCnParamsEncode(navBanner.title)}',
+                transition: TransitionType.cupertino);
           },
           child: ImageHelper.imageCache(
               width: 200,

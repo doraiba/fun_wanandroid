@@ -30,7 +30,6 @@ class Routes {
     /// 我这边先不设置默认的转场动画，转场动画在下面会讲，可以在另外一个地方设置（可以看NavigatorUtil类）
     router.define(root, handler: rootHandler);
     router.define(home, handler: homeHandler);
-    router.define(setting, handler: settingHandler);
     router.define(login, handler: signInHandler);
     router.define(register, handler: signUpHandler);
     router.define(chaosNav, handler: chaosNavHandler);
