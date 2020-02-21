@@ -107,10 +107,15 @@ class UserAccountHeader extends StatelessWidget {
                                 rejected: Text(I18n.of(context).operatorError),
                                 supplier: () =>
                                     userInfoStore.articleStore.shareFuture,
-                                builder: (_, data, __) => Text(
-                                  "$data",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                builder: (_, data, __) => GestureDetector(
+                                  child: Text(
+                                    "$data",
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  onTap: () => Routes.router
+                                      .navigateTo(context, Routes.share),
                                 ),
                               ),
                               subtitle: Text(
@@ -126,10 +131,15 @@ class UserAccountHeader extends StatelessWidget {
                                 rejected: Text(I18n.of(context).operatorError),
                                 supplier: () =>
                                     userInfoStore.articleStore.collectFuture,
-                                builder: (_, data, __) => Text(
-                                  "$data",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                builder: (_, data, __) => GestureDetector(
+                                  child: Text(
+                                    "$data",
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  onTap: () => Routes.router
+                                      .navigateTo(context, Routes.collect),
                                 ),
                               ),
                               subtitle: Text(

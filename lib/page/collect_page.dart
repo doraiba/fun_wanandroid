@@ -4,32 +4,23 @@ import 'package:fun_wanandroid/component/skeleton_component.dart';
 import 'package:fun_wanandroid/generated/i18n.dart';
 import 'package:fun_wanandroid/helper/image_helper.dart';
 import 'package:fun_wanandroid/helper/widget_helper.dart';
-import 'package:fun_wanandroid/store/project_page_store.dart';
+import 'package:fun_wanandroid/store/collect_store.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class ArticleListPage extends StatefulWidget {
-  final int cid;
-
-  const ArticleListPage({Key key, @required this.cid}) : super(key: key);
-  @override
-  _ArticleListPageState createState() => _ArticleListPageState();
-}
-
-class _ArticleListPageState extends State<ArticleListPage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+class CollectPage extends StatelessWidget {
+  const CollectPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    return Provider(
-      builder: (_) => ProjectPageStore(widget.cid),
-      dispose: (_, store) => store.dispose(),
-      child: Consumer<ProjectPageStore>(
-        builder: (_, store, __) {
-          return FutureObserver<Map<String, dynamic>>(
+    return Scaffold(
+      appBar: AppBar(title: Text('分享'),),
+      body: Container(
+        child: Provider(
+          builder: (_) => new CollectStore(),
+          child: Consumer<CollectStore>(
+            builder: (_, store, __) {
+              return FutureObserver<Map<String, dynamic>>(
             loading: SkeletonList(
               builder: (BuildContext context, int index) => SkeletonListItem(),
             ),
@@ -58,12 +49,14 @@ class _ArticleListPageState extends State<ArticleListPage>
                 child: ListView.builder(
                   itemCount: list.length,
                   itemBuilder: (BuildContext context, int index) =>
-                      ArticleListItem(article: list[index]),
+                      ArticleListItem(article: list[index],hiddenFav: true,),
                 ),
               );
             },
           );
-        },
+            },
+          ),
+        ),
       ),
     );
   }

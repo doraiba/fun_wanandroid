@@ -15,6 +15,8 @@ class Routes {
 
   static final String chaosNav = '/chaos/:id/:cid';
   static final String webview = '/webview';
+  static final String share = '/share';
+  static final String collect = '/collect';
 
   static void configureRoutes() {
     router.notFoundHandler = Handler(
@@ -34,6 +36,8 @@ class Routes {
     router.define(register, handler: signUpHandler);
     router.define(chaosNav, handler: chaosNavHandler);
     router.define(webview, handler: webviewFlutterHandler);
+    router.define(share, handler: shareHandler);
+    router.define(collect, handler: collectHandler);
   }
 }
 

@@ -1,5 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:fun_wanandroid/page/chaos_nav_page.dart';
+import 'package:fun_wanandroid/page/collect_page.dart';
+import 'package:fun_wanandroid/page/share_page.dart';
 import 'package:fun_wanandroid/page/signin_page.dart';
 import 'package:fun_wanandroid/page/navigator_page.dart';
 import 'package:fun_wanandroid/page/signup_page.dart';
@@ -22,3 +24,7 @@ var webviewFlutterHandler = Handler(
     handlerFunc: (_, Map<String, List<String>> params) => WebViewFlutterPage(
         title: FluroConvertUtils.fluroCnParamsDecode(params['title'].first),
         url: FluroConvertUtils.fluroCnParamsDecode(params['url'].first)));
+
+var shareHandler = Handler(handlerFunc: (_, __) => SharePage());
+
+var collectHandler = Handler(handlerFunc: (_, __) => CollectPage());
