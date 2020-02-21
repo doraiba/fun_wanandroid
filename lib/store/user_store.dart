@@ -10,7 +10,7 @@ class UserStore = _UserStore with _$UserStore;
 abstract class _UserStore with Store {
   PreferencesService _preferencesService;
 
-  ReactionDisposer disposer;
+  List<ReactionDisposer> disposers;
 
   _UserStore(this._preferencesService) {
     _setup();
@@ -19,19 +19,24 @@ abstract class _UserStore with Store {
   void _setup() {
     lastLoginName = _preferencesService.lastLoginName;
     auth = _preferencesService.auth;
-    this.collectIds.addAll(auth.collectIds);
-    this.disposer =  reaction((_)=>this.collectIds.length, (__){
-      if(this.auth == null) {return;}
-      this.auth.collectIds = this.collectIds;
-      this.setAuth(value: this.auth);
-
-    });
+    this.disposers = [
+      autorun((_) => this.collectIds.addAll(auth?.collectIds ?? <Object>[])),
+      reaction((_) => this.collectIds.length, (__) {
+        if (this.auth == null) {
+          return;
+        }
+        this.auth.collectIds = this.collectIds;
+        this.setAuth(value: this.auth);
+      })
+    ];
   }
 
   @override
   void dispose() {
     super.dispose();
-    this?.disposer();
+    this?.disposers?.forEach((element) {
+      element();
+    });
   }
 
   /// 最后一次登录成功的登录名
@@ -41,30 +46,28 @@ abstract class _UserStore with Store {
   @observable
   User auth;
 
-  List<Object> collectIds = new ObservableList<Object>();
+  List<Object> collectIds = ObservableList<Object>.of(<Object>[]);
 
-
-  bool hasFav(Object id){
+  bool hasFav(Object id) {
     return this.collectIds.contains(id);
   }
 
-  Future<void> removeFav(Object id) async{
-    runInAction(()=> this.collectIds.remove(id));
-    try{
+  Future<void> removeFav(Object id) async {
+    runInAction(() => this.collectIds.remove(id));
+    try {
       await WanAndroidRepository.unCollect(id);
-    }catch(_){
-      runInAction(()=> this.collectIds.insert(0, id));
+    } catch (_) {
+      runInAction(() => this.collectIds.insert(0, id));
     }
   }
 
-  Future<void> like(Object id) async{
-    runInAction(()=> this.collectIds.insert(0, id));
-    try{
+  Future<void> like(Object id) async {
+    runInAction(() => this.collectIds.insert(0, id));
+    try {
       await WanAndroidRepository.collect(id);
-    }catch(_){
-      runInAction(()=> this.collectIds.remove(id));
+    } catch (_) {
+      runInAction(() => this.collectIds.remove(id));
     }
-
   }
 
   @action

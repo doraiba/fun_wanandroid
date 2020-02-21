@@ -14,7 +14,6 @@ class PreferencesService {
   static const String _icolor = 'i_of_color';
   static const String _lastLoginName = 'last_login_name';
   static const String _auth = "auth_user";
-  static const String _auth_collect_ids = "auth_user::collect_ids";
   static const String _search = "_search";
   SharedPreferences _sharedPreferences;
 
@@ -56,13 +55,6 @@ class PreferencesService {
     _sharedPreferences.setString(
         _auth, user == null ? null : json.encode(user));
   }
-
-  set collectIds(List<String> collectIds) {
-    _sharedPreferences.setStringList(_auth_collect_ids, collectIds);
-  }
-
-  List<String> get collectIds =>
-      _sharedPreferences.getStringList(_auth_collect_ids);
 
   set searchRepository(List<String> repository){
     _sharedPreferences.setStringList(_search, repository);
