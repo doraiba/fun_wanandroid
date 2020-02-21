@@ -14,7 +14,7 @@ class CollectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('分享'),),
+      appBar: AppBar(title: Text(I18n.of(context).favourites.toUpperCase()),),
       body: Container(
         child: Provider(
           builder: (_) => new CollectStore(),
