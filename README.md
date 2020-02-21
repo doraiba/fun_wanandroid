@@ -1,4 +1,4 @@
-参考 [**fun_android_flutter **](https://github.com/phoenixsky/fun_android_flutter) ,[**flutter_ui_challenges**](https://github.com/lohanidamodar/flutter_ui_challenges) UI,Provider+Mobx写的一个玩安卓app
+参考 [**fun_android_flutter**](https://github.com/phoenixsky/fun_android_flutter) ,[**flutter_ui_challenges**](https://github.com/lohanidamodar/flutter_ui_challenges) UI,Provider+Mobx写的一个玩安卓app
 
 
 
