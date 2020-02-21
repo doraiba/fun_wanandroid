@@ -1,4 +1,3 @@
-
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -13,7 +12,8 @@ class ArticleListItem extends StatelessWidget {
   final Article article;
   final Widget mark;
   final bool hiddenFav;
-  const ArticleListItem({Key key, @required this.article, this.mark, this.hiddenFav: false})
+  const ArticleListItem(
+      {Key key, @required this.article, this.mark, this.hiddenFav: false})
       : super(key: key);
 
   @override
@@ -127,19 +127,26 @@ class ArticleListItem extends StatelessWidget {
           right: 0,
           child: Padding(
             padding: EdgeInsets.only(bottom: 10, right: 20),
-            child: hiddenFav ? SizedBox.shrink(): ConsumerObserver<UserStore>(
-              builder: (context, userStore, child) {
-                bool has = userStore.hasFav(article.id);
-                return GestureDetector(
-                  child: Icon(has
-                      ? Icons.favorite
-                      : Icons.favorite_border),
-                  onTap: () {
-                    has ? userStore.removeFav(article.id): userStore.like(article.id);
-                  },
-                );
-              },
-            ),
+            child: hiddenFav
+                ? SizedBox.shrink()
+                : ConsumerObserver<UserStore>(
+                    builder: (context, userStore, child) {
+                      bool has = userStore.hasFav(article.id);
+                      return GestureDetector(
+                        child:
+                            Icon(has ? Icons.favorite : Icons.favorite_border),
+                        onTap: () {
+                          if (userStore.auth == null) {
+                            Routes.router.navigateTo(context, Routes.login);
+                            return;
+                          }
+                          has
+                              ? userStore.removeFav(article.id)
+                              : userStore.like(article.id);
+                        },
+                      );
+                    },
+                  ),
           ),
         )
       ],
