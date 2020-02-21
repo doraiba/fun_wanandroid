@@ -7,7 +7,9 @@ abstract class PageStore<T> = _PageStore<T> with _$PageStore<T>;
 
 abstract class _PageStore<T> with Store {
   final int initialPage;
-  _PageStore({this.initialPage: 0}) : page = initialPage {
+  final bool initialRefresh;
+  _PageStore({this.initialPage: 0, this.initialRefresh: true})
+      : page = initialPage {
     _setup();
   }
 
@@ -24,6 +26,10 @@ abstract class _PageStore<T> with Store {
   @observable
   int page;
 
+  /// 刷新次数
+  @observable
+  int refreshTime = 0;
+
   /// 默认请求数量 无用
   @observable
   int pageSize;
@@ -39,7 +45,13 @@ abstract class _PageStore<T> with Store {
   bool get has => (page + 1) < pageCount;
 
   void _setup() {
-    disposer = autorun((_) => this.loadtemplate(page: this.page));
+    disposer = this.initialRefresh
+        ? autorun((_) =>
+            this.loadtemplate(page: this.page, refreshTime: this.refreshTime))
+        : reaction(
+            (_) => '${this.page}-${this.refreshTime}',
+            (_) => this
+                .loadtemplate(page: this.page, refreshTime: this.refreshTime));
   }
 
   @override
@@ -51,6 +63,7 @@ abstract class _PageStore<T> with Store {
   @action
   void refresh() {
     this.page = initialPage;
+    ++this.refreshTime;
   }
 
   @action
@@ -74,7 +87,7 @@ abstract class _PageStore<T> with Store {
 
   /// 基础模板
   @action
-  Future<List<T>> loadtemplate({int page}) async {
+  Future<List<T>> loadtemplate({int page, int refreshTime}) async {
     Map<String, dynamic> result;
     try {
       result = await load(page: page);

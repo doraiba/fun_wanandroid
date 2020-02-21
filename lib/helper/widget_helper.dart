@@ -59,8 +59,8 @@ class ConsumerFutureObserver<S, T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (_, store, __) => FutureObserver(
+    return Consumer<S>(
+      builder: (_, store, __) => FutureObserver<T>(
         refresh: refresh,
         loading: loading,
         rejected: rejected,

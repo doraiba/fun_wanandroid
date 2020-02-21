@@ -7,6 +7,7 @@ import 'package:fun_wanandroid/route/routes.dart';
 import 'package:fun_wanandroid/store/category_store.dart';
 import 'package:fun_wanandroid/store/home_store.dart';
 import 'package:fun_wanandroid/store/preferences_service.dart';
+import 'package:fun_wanandroid/store/search_store.dart';
 import 'package:fun_wanandroid/store/settings_store.dart';
 import 'package:fun_wanandroid/store/user_store.dart';
 import 'package:oktoast/oktoast.dart';
@@ -33,7 +34,10 @@ class MyApp extends StatelessWidget {
             builder: (_, preferencesService, __) =>
                 UserStore(preferencesService),
             dispose: (_, store) => store.dispose(),
-          )
+          ),
+          ProxyProvider<PreferencesService, SearchStore>(
+            builder: (_, service, __) => SearchStore(service),
+          ),
         ],
         child: Consumer<SettingsStore>(
           builder: (_, settingsStore, __) => Observer(

@@ -70,6 +70,23 @@ mixin _$PageStore<T> on _PageStore<T>, Store {
     }, _$pageAtom, name: '${_$pageAtom.name}_set');
   }
 
+  final _$refreshTimeAtom = Atom(name: '_PageStore.refreshTime');
+
+  @override
+  int get refreshTime {
+    _$refreshTimeAtom.context.enforceReadPolicy(_$refreshTimeAtom);
+    _$refreshTimeAtom.reportObserved();
+    return super.refreshTime;
+  }
+
+  @override
+  set refreshTime(int value) {
+    _$refreshTimeAtom.context.conditionallyRunInAction(() {
+      super.refreshTime = value;
+      _$refreshTimeAtom.reportChanged();
+    }, _$refreshTimeAtom, name: '${_$refreshTimeAtom.name}_set');
+  }
+
   final _$pageSizeAtom = Atom(name: '_PageStore.pageSize');
 
   @override
@@ -107,8 +124,9 @@ mixin _$PageStore<T> on _PageStore<T>, Store {
   final _$loadtemplateAsyncAction = AsyncAction('loadtemplate');
 
   @override
-  Future<List<T>> loadtemplate({int page}) {
-    return _$loadtemplateAsyncAction.run(() => super.loadtemplate(page: page));
+  Future<List<T>> loadtemplate({int page, int refreshTime}) {
+    return _$loadtemplateAsyncAction
+        .run(() => super.loadtemplate(page: page, refreshTime: refreshTime));
   }
 
   final _$_PageStoreActionController = ActionController(name: '_PageStore');

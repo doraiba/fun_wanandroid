@@ -76,15 +76,13 @@ class WanAndroidRepository {
   }
 
   // 搜索结果
-  static Future<List<Article>> fetchSearchResult(
+  static Future<Map<String, dynamic>> fetchSearchResult(
       {key = "", int pageNum = 0}) async {
     var response =
         await dio.post<Map>('article/query/$pageNum/json', queryParameters: {
       'k': key,
     });
-    return response.data['datas']
-        .map<Article>((item) => Article.fromMap(item))
-        .toList();
+    return response.data;
   }
 
   /// 登录
