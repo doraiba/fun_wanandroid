@@ -1,16 +1,12 @@
-# fun_wanandroid
+参考 [**fun_android_flutter **](https://github.com/phoenixsky/fun_android_flutter) ,[**flutter_ui_challenges**](https://github.com/lohanidamodar/flutter_ui_challenges) UI,Provider+Mobx写的一个玩安卓app
 
-A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## 预览
 
-A few resources to get you started if this is your first Flutter project:
+|                        注册                         |                        个人中心                         |                        未认证                         |
+| :-------------------------------------------------: | :-----------------------------------------------------: | :---------------------------------------------------: |
+| ![注册](Screenshots/Screenshot_20200221-143932.png) | ![个人中心](Screenshots/Screenshot_20200221-143726.png) | ![未认证](Screenshots/Screenshot_20200221-143840.png) |
+|                        首页                         |                          搜索                           |                         其他                          |
+| ![首页](Screenshots/Screenshot_20200221-143741.png) |   ![搜索](Screenshots/Screenshot_20200221-144137.png)   |  ![其他](Screenshots/Screenshot_20200221-143807.png)  |
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
