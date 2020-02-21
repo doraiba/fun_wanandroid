@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
           ),
           ProxyProvider<PreferencesService, SearchStore>(
             builder: (_, service, __) => SearchStore(service),
+            dispose: (_, store) => store.dispose(),
           ),
         ],
         child: Consumer<SettingsStore>(
