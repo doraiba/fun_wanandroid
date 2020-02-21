@@ -21,8 +21,10 @@ abstract class _UserStore with Store {
     auth = _preferencesService.auth;
     this.collectIds.addAll(auth.collectIds);
     this.disposer =  reaction((_)=>this.collectIds.length, (__){
+      if(this.auth == null) {return;}
       this.auth.collectIds = this.collectIds;
       this.setAuth(value: this.auth);
+
     });
   }
 
@@ -81,5 +83,6 @@ abstract class _UserStore with Store {
   Future logout() async {
     await WanAndroidRepository.logout();
     this.setAuth(value: null);
+    this.collectIds.clear();
   }
 }
