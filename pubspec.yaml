@@ -24,42 +24,42 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
-  mobx:
-  flutter_mobx:
-  provider:
-  dio:
-  shared_preferences:
-  equatable:
-  url_launcher:
-  package_info:
-  flutter_swiper:
-  cached_network_image: 
-  webview_flutter:
-  intl:
-  rxdart:
-  pull_to_refresh:
-  fluro:
-  cookie_jar:
-  dio_cookie_manager:
-  common_utils:
-  html_unescape:
-  shimmer:
-  json_annotation:
-  flutter_html:
-  flare_flutter:
-  flutter_custom_clippers:
-  validators:
-  oktoast:
-  event_bus:
+  cupertino_icons: ">=0.1.2 <2.0.0"
+  mobx: any
+  flutter_mobx: any
+  provider: any
+  dio: any
+  shared_preferences: any
+  equatable: any
+  url_launcher: any
+  package_info: any
+  flutter_swiper: any
+  cached_network_image: any 
+  webview_flutter: any
+  intl: any
+  rxdart: any
+  pull_to_refresh: any
+  fluro: any
+  cookie_jar: any
+  dio_cookie_manager: any
+  common_utils: any
+  html_unescape: any
+  shimmer: any
+  json_annotation: any
+  flutter_html: any
+  flare_flutter: any
+  flutter_custom_clippers: any
+  validators: any
+  oktoast: any
+  event_bus: any
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mobx_codegen:
-  build_runner:
-  intl_translation:
-  json_serializable:
+  mobx_codegen: any
+  build_runner: any
+  intl_translation: any
+  json_serializable: any
 
 
 # For information on the generic Dart part of this file, see the
